@@ -1,0 +1,110 @@
+/* Empty. Add your own CSS if you like */
+.wip .padding {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  text-transform: capitalize;
+}
+
+.temple .tab-content {
+  padding-top: 50px;
+}
+
+.events .tab-content {
+  padding-top: 90px;
+}
+
+.center {
+  text-align: center;
+}
+
+.logo {
+  background: #FF9933 url('../img/logo.png') no-repeat center center;
+  background-size: contain;
+  margin: 0;
+  width: 100%;
+}
+
+.menu .bar-header {
+  height: 150px;
+}
+
+.menu .has-header {
+  top: 150px;
+}
+
+.spinner svg {
+  height: 85px !important;
+  left: 40%;
+  top: 250%;
+  width: 19% !important;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.address {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider {
+  height: 320px;
+}
+
+.temple-icon {
+  float: left;
+  margin-right: 20px;
+  width: 45px;
+}
+
+.book {
+  line-height: 20px;
+}
+
+.circle {
+  background-color: #FF9933;
+  border-radius: 50%;
+  color: #FFF;
+  display: inline-block;
+  height: 45px;
+  line-height: 45px;
+  margin-right: 20px;
+  text-align: center;
+  width: 45px;
+}
+
+.other-info {
+  margin: 10px;
+}
+
+.connect {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.directions {
+  align-items: center;
+  display: flex;
+  font-size: 32px;
+  justify-content: center;
+  text-align: center;
+}
+
+.directions button {
+  color: #FF9933 !important;
+}
+
+.information {
+  white-space: pre-line;
+}
+
+.angular-google-map-container { height: 280px; }

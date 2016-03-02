@@ -1,0 +1,51 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon light" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable">
+      <h1 class="logo"></h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close href="#/app/temples/pathi">
+          பதிகள்
+        </ion-item>
+        <ion-item menu-close href="#/app/temples/thangal">
+          நிழல்தாங்கள்கள்
+        </ion-item>
+        <!-- <ion-item menu-close href="#/app/testimonies">
+          பகிர்ந்து கொள்கிறோம்
+        </ion-item>
+        <ion-item menu-close href="#/app/wip">
+          செய்திகள்
+        </ion-item> -->
+        <ion-item menu-close href="#/app/events">
+          நிகழ்வுகள்
+        </ion-item>
+        <ion-item menu-close href="#/app/uchipadipu">
+          உச்சிப்படிப்பு
+        </ion-item>
+        <ion-item menu-close href="#/app/ugapadipu">
+          உகப்படிப்பு
+        </ion-item>
+        <ion-item menu-close ng-click="share()">
+          பங்கிடு
+        </ion-item>
+        <ion-item menu-close href="#/app/contact">
+          தொடர்பு கொள்ள
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

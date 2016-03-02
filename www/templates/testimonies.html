@@ -1,0 +1,9 @@
+<ion-view view-title="பகிர்ந்து கொள்கிறோம்">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="testimony in testimonies track by $index" href="#/app/testimony/{{testimony.id}}">
+        {{testimony.name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

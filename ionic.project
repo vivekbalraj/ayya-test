@@ -1,0 +1,12 @@
+{
+  "name": "ayya1008",
+  "app_id": "55d6be2e",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
