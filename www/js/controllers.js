@@ -10,8 +10,7 @@ angular.module('ayya1008.controllers', [])
   //});
 
   $scope.server = {
-    url: 'http://ayya.herokuapp.com/api/v1/',
-    absPath: 'http://ayya.herokuapp.com'
+    url: 'http://ayya.herokuapp.com/api/v1/'
   };
 
   $scope.isOfflineAvailable = DataService.isOfflineAvailable();
@@ -26,9 +25,6 @@ angular.module('ayya1008.controllers', [])
     return navigator.onLine;
   };
 
-  DataService.getEvents(true).then(function(events) {
-    $scope.$broadcast('EVENTS_RECEIVED', events);
-  });
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
   });
@@ -52,12 +48,6 @@ angular.module('ayya1008.controllers', [])
   DataService.getTemples().then(processTemples);
 
   $scope.templeType = $stateParams.templeType;
-
-  $scope.doRefresh = function() {
-    DataService.getTemples(true).then(processTemples).finally(function() {
-      $scope.$broadcast('scroll.refreshComplete');
-    });
-  };
 
   $scope.$on('TEMPLES_RECEIVED', function(scope, temples) {
     processTemples(temples);
