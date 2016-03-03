@@ -18,40 +18,6 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
-    // kick off the platform web client
-    // Ionic.io();
-
-    // var push = new Ionic.Push({
-    //   debug: false,
-    //   onNotification: function(notification) {
-    //     var payload = notification.payload;
-    //     console.log(notification, payload);
-    //   },
-    //   onRegister: function(data) {
-    //     console.log(data.token);
-    //     // this will give you a fresh user or the previously saved 'current user'
-    //     var user = Ionic.User.current();
-
-    //     // if the user doesn't have an id, you'll need to give it one.
-    //     if (!user.id) {
-    //       user.id = Ionic.User.anonymousId();
-    //       // user.id = 'your-custom-user-id';
-    //     }
-    //     user.save();
-    //   },
-    //   pluginConfig: {
-    //     ios: {
-    //       badge: true,
-    //       sound: true
-    //     },
-    //     android: {
-    //       iconColor: '#343434'
-    //     }
-    //   }
-    // });
-
-    // push.register();
   });
 })
 

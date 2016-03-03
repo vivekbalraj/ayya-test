@@ -15,7 +15,7 @@ angular.module('ayya1008.controllers', [])
 
   $scope.isOfflineAvailable = DataService.isOfflineAvailable();
 
-  // $scope.width = document.body.clientWidth - 20;
+  $scope.width = document.body.clientWidth - 20;
 
   $scope.share = function() {
     $cordovaSocialSharing.share('Share the app to your friends: - ', null, null, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
