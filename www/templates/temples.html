@@ -1,5 +1,7 @@
 <ion-view view-title="{{title}}" cache-view="false">
   <ion-content>
+    <ion-refresher pulling-text="புதுப்பி..." on-refresh="doRefresh()">
+    </ion-refresher>
     <div ng-if="isOnline() || isOfflineAvailable">
       <ion-spinner icon="android" ng-if="isSpinnerVisible" class="spinner-positive"></ion-spinner>
       <ion-list ng-if="templeType === 'thangal'">

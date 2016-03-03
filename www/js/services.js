@@ -28,26 +28,28 @@ angular.module('ayya1008.services', [])
       }
     }
 
-    var getTemples = function() {
+    var getTemples = function(forced) {
       var deferred = $q.defer();
       if (navigator.onLine) {
         var temples = db.getCollection('temples').chain().data();
-        $http({
-          method: 'GET',
-          url: server.url + 'temples',
-          data: {},
-          transformResponse: function(data, headersGetter, status) {
-            return {
-              data: data
-            };
-          }
-        }).then(function(response) {
-          var temples = JSON.parse(response.data.data).temples;
-          temples.forEach(function(temple) {
-            upsert('temples', angular.copy(temple));
+        if (forced || (!temples || temples.length === 0)) {
+          $http({
+            method: 'GET',
+            url: server.url + 'temples',
+            data: {},
+            transformResponse: function(data, headersGetter, status) {
+              return {
+                data: data
+              };
+            }
+          }).then(function(response) {
+            var temples = JSON.parse(response.data.data).temples;
+            temples.forEach(function(temple) {
+              upsert('temples', angular.copy(temple));
+            });
+            deferred.resolve(temples);
           });
-          deferred.resolve(temples);
-        });
+        }
         if (temples && temples.length > 0) {
           deferred.resolve(temples);
         }
@@ -57,26 +59,28 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
-    var getEvents = function() {
+    var getEvents = function(forced) {
       var deferred = $q.defer();
       if (navigator.onLine) {
         var events = db.getCollection('events').chain().data();
-        $http({
-          method: 'GET',
-          url: server.url + 'events',
-          data: {},
-          transformResponse: function(data, headersGetter, status) {
-            return {
-              data: data
-            };
-          }
-        }).then(function(response) {
-          var events = JSON.parse(response.data.data).events;
-          events.forEach(function(event) {
-            upsert('events', angular.copy(event));
+        if (forced || (!events || events.length === 0)) {
+          $http({
+            method: 'GET',
+            url: server.url + 'events',
+            data: {},
+            transformResponse: function(data, headersGetter, status) {
+              return {
+                data: data
+              };
+            }
+          }).then(function(response) {
+            var events = JSON.parse(response.data.data).events;
+            events.forEach(function(event) {
+              upsert('events', angular.copy(event));
+            });
+            deferred.resolve(events);
           });
-          deferred.resolve(events);
-        });
+        }
         if (events && events.length) {
           deferred.resolve(events);
         }
