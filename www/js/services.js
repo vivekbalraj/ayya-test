@@ -49,8 +49,7 @@ angular.module('ayya1008.services', [])
             });
             deferred.resolve(temples);
           });
-        }
-        if (temples && temples.length > 0) {
+        } else if (temples && temples.length > 0) {
           deferred.resolve(temples);
         }
       } else {
@@ -59,44 +58,17 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
-    var getEvents = function(forced) {
-      var deferred = $q.defer();
-      if (navigator.onLine) {
-        var events = db.getCollection('events').chain().data();
-        if (forced || (!events || events.length === 0)) {
-          $http({
-            method: 'GET',
-            url: server.url + 'events',
-            data: {},
-            transformResponse: function(data, headersGetter, status) {
-              return {
-                data: data
-              };
-            }
-          }).then(function(response) {
-            var events = JSON.parse(response.data.data).events;
-            events.forEach(function(event) {
-              upsert('events', angular.copy(event));
-            });
-            deferred.resolve(events);
-          });
-        }
-        if (events && events.length) {
-          deferred.resolve(events);
-        }
-      } else {
-        deferred.resolve(db.getCollection('events').chain().data());
-      }
-      return deferred.promise;
+    var isOfflineAvailable = function() {
+      return (db.getCollection('temples').chain().data()).length > 0;
     };
 
-    var isOfflineAvailable = function() {
-      return (db.getCollection('events').chain().data()).length > 0 && (db.getCollection('temples').chain().data()).length > 0;
+    var registerDevice = function(device) {
+      $http.post(server.url + 'devices', device);
     };
 
     return {
       getTemples: getTemples,
-      getEvents: getEvents,
-      isOfflineAvailable: isOfflineAvailable
+      isOfflineAvailable: isOfflineAvailable,
+      registerDevice: registerDevice
     };
   });

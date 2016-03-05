@@ -108,4 +108,15 @@
   white-space: pre-line;
 }
 
+.lh10 {
+  line-height: 10;
+}
+
+.map-place {
+  background: #FFF url('../img/map.png') center center;
+  background-size: cover;
+  font-size: 16px;
+  font-weight: bolder;
+}
+
 .angular-google-map-container { height: 280px; }

@@ -1,6 +1,6 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService) {
+.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $cordovaPush, $ionicPlatform, $cordovaSplashscreen) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -9,11 +9,20 @@ angular.module('ayya1008.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
+  $ionicPlatform.ready(function(device) {
+    var config = {
+      senderID: '975008491239'
+    };
+    $cordovaPush.register(config);
+  });
+
   $scope.server = {
     url: 'http://ayya.herokuapp.com/api/v1/'
   };
 
-  $scope.isOfflineAvailable = DataService.isOfflineAvailable();
+  $scope.isOfflineAvailable = function() {
+    return DataService.isOfflineAvailable();
+  }
 
   $scope.width = document.body.clientWidth - 20;
 
@@ -27,6 +36,43 @@ angular.module('ayya1008.controllers', [])
 
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
+    $cordovaSplashscreen.hide();
+  });
+
+  function handleAndroid(notification) {
+    console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
+    if (notification.event == "registered") {
+      $scope.regId = notification.regid;
+      storeDeviceToken("android");
+    } else if (notification.event == "message") {
+      // $cordovaDialogs.alert(notification.message, "Push Notification Received");
+      // $scope.$apply(function() {
+      //   $scope.notifications.push(JSON.stringify(notification.message));
+      // })
+    }
+    // else if (notification.event == "error")
+    // $cordovaDialogs.alert(notification.msg, "Push notification error event");
+    // else $cordovaDialogs.alert(notification.event, "Push notification handler - Unprocessed Event");
+  }
+
+  function storeDeviceToken(type) {
+    var device = {
+      platform: type,
+      token: $scope.regId
+    };
+
+    DataService.registerDevice(device);
+
+    // $http.post('http://192.168.1.16:8000/subscribe', JSON.stringify(user)).success(function(data, status) {
+    //   console.log("Token stored, device is successfully subscribed to receive push notifications.");
+    // }).error(function(data, status) {
+    //   console.log("Error storing device token." + data + " " + status)
+    // });
+  }
+
+  $scope.$on('$cordovaPush:notificationReceived', function(event, notification) {
+    console.log(JSON.stringify([notification]));
+    handleAndroid(notification);
   });
 })
 
@@ -40,9 +86,7 @@ angular.module('ayya1008.controllers', [])
     });
     $scope.grouped = _.groupBy($scope.currentTemples, 'district');
     $scope.districts = Object.keys($scope.grouped);
-    if ($scope.temples && $scope.temples.length > 0) {
-      $scope.isSpinnerVisible = false;
-    }
+    $scope.isSpinnerVisible = false;
   };
 
   DataService.getTemples().then(processTemples);
@@ -60,43 +104,10 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('TestimoniesCtrl', function() {})
-
-.controller('EventsCtrl', function($scope, $http, DataService) {
-  $scope.isSpinnerVisible = true;
-
-  var processEvents = function(events) {
-    $scope.isSpinnerVisible = false;
-    $scope.events = events;
-    $scope.events = _.sortBy($scope.events, function(event) {
-      return new Date(event.date);
-    });
-    $scope.futureEvents = _.filter($scope.events, function(event) {
-      return new Date(event.date) >= new Date();
-    });
-    $scope.pastEvents = _.filter($scope.events, function(event) {
-      return new Date(event.date) < new Date();
-    });
-  }
-  DataService.getEvents().then(processEvents);
-})
-
-.controller('TestimonyCtrl', function($scope, $stateParams) {
-  var testimonies = $scope.testimonies;
-  for (var i = 0; i < testimonies.length; i++) {
-    if (testimonies[i].id === $stateParams.testimonyId) {
-      $scope.testimony = testimonies[i];
-      $scope.page = {
-        title: $scope.testimony.name + ', ' + $scope.testimony.village
-      };
-      break;
-    }
-  }
-})
-
 .controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService) {
 
   DataService.getTemples().then(function(temples) {
+
     $scope.temple = _.find(temples, {
       id: parseInt($stateParams.templeId)
     });
@@ -104,6 +115,11 @@ angular.module('ayya1008.controllers', [])
     $scope.temple.images = _.filter($scope.temple.images, function(url) {
       return url.indexOf('medium/missing.png') < 0;
     });
+
+    if (!$scope.temple.images || $scope.temple.images.length === 0) {
+      $scope.temple.images = ['../www/img/preview.png'];
+      $scope.temple.noImage = true;
+    }
 
     $scope.temple.events = _.chain($scope.temple.events).filter(function(event) {
       return new Date(event.date) >= new Date();
@@ -113,6 +129,10 @@ angular.module('ayya1008.controllers', [])
     }).sortBy(function(event) {
       return new Date(event.date);
     }).value();
+
+    if (!$scope.$$phase) {
+      $scope.$apply(function() {});
+    }
 
     $scope.getDirections = function() {
       var posOptions = {

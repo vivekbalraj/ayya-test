@@ -4,13 +4,16 @@
 
       <ion-tab title="தகவல்">
           <ion-content class="padding has-header">
-            <ion-slide-box ng-if="temple.images && temple.images.length > 0 && isOnline()">
+            <ion-slide-box ng-if="(temple.images && temple.images.length > 0) && (isOnline() || temple.noImage)">
               <ion-slide ng-repeat="url in temple.images track by $index">
                 <div class="center">
                   <img ng-src="{{url}}" style="max-height: 320px; max-width:{{width}}px">
                 </div>
               </ion-slide>
             </ion-slide-box>
+            <div class="card center lh10" ng-if="!isOnline() && !temple.noImage">
+              இணையத்துடன் இணைக்கவும்.
+            </div>
             <div class="card" ng-init="isCollapsed=true" ng-if="temple.information">
               <div class="item item-divider" ng-click="isCollapsed=!isCollapsed">
                 <i ng-class="{'ion-chevron-down': isCollapsed, 'ion-chevron-up': !isCollapsed}"></i>
@@ -65,6 +68,12 @@
                   </ui-gmap-marker>
                 </ui-gmap-google-map>
               </div>
+            </div>
+            <div class="card center lh10 map-place" ng-if="!isOnline() && temple.latitude">
+              இணையத்துடன் இணைக்கவும்.
+            </div>
+            <div class="card center lh10 map-place" ng-if="!temple.latitude">
+              தகவல் இல்லை.
             </div>
             <div class="card">
               <div class="item item-text-wrap">
