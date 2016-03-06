@@ -51,26 +51,6 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     }
   })
 
-  .state('app.testimonies', {
-    url: '/testimonies',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/testimonies.html',
-        controller: 'TestimoniesCtrl'
-      }
-    }
-  })
-
-  .state('app.testimony', {
-    url: '/testimony/:testimonyId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/testimony.html',
-        controller: 'TestimonyCtrl'
-      }
-    }
-  })
-
   .state('app.uchipadipu', {
     url: '/uchipadipu',
     views: {
@@ -89,16 +69,6 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     }
   })
 
-  .state('app.events', {
-    url: '/events',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/events.html',
-        controller: 'EventsCtrl'
-      }
-    }
-  })
-
   .state('app.contact', {
     url: '/contact',
     views: {
@@ -112,17 +82,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     url: '/messages',
     views: {
       'menuContent': {
-        templateUrl: 'templates/messages.html',
-        controller: 'MessagesCtrl'
-      }
-    }
-  })
-
-  .state('app.wip', {
-    url: '/wip',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/wip.html'
+        templateUrl: 'templates/messages.html'
       }
     }
   });

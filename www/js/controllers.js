@@ -35,10 +35,6 @@ angular.module('ayya1008.controllers', [])
     });
   });
 
-  $scope.server = {
-    url: 'http://ayya.herokuapp.com/api/v1/'
-  };
-
   $scope.isOfflineAvailable = function() {
     return DataService.isOfflineAvailable();
   }
@@ -85,10 +81,6 @@ angular.module('ayya1008.controllers', [])
   } else {
     $scope.title = 'நிழல்தாங்கள்கள்';
   }
-})
-
-.controller('MessagesCtrl', function($scope, DataService) {
-  console.log();
 })
 
 .controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService) {
