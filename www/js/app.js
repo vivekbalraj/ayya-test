@@ -108,6 +108,16 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     }
   })
 
+  .state('app.messages', {
+    url: '/messages',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/messages.html',
+        controller: 'MessagesCtrl'
+      }
+    }
+  })
+
   .state('app.wip', {
     url: '/wip',
     views: {

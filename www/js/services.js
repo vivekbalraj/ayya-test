@@ -1,7 +1,8 @@
 angular.module('ayya1008.services', [])
   .service('DataService', function($http, $q) {
     var server = {
-      url: 'http://ayya.herokuapp.com/api/v1/'
+      // url: 'http://ayya.herokuapp.com/api/v1/'
+      url: 'http://192.168.0.3:3000/api/v1/'
     };
 
     db = new loki('ayya1008.json', {
@@ -13,6 +14,9 @@ angular.module('ayya1008.services', [])
     }
     if (!db.getCollection('temples')) {
       db.addCollection('temples');
+    }
+    if (!db.getCollection('messages')) {
+      db.addCollection('messages');
     }
 
     var upsert = function(collectionName, object) {
@@ -66,8 +70,37 @@ angular.module('ayya1008.services', [])
       $http.post(server.url + 'devices', device);
     };
 
+    var getMessages = function(page) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        page = page || 0;
+        $http({
+          method: 'GET',
+          url: server.url + 'notifications',
+          data: {
+            page: page
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          var messages = JSON.parse(response.data.data).messages;
+          messages.forEach(function(message) {
+            upsert('messages', angular.copy(message));
+          });
+          deferred.resolve(messages);
+        });
+      } else {
+        deferred.resolve(db.getCollection('messages').chain().data());
+      }
+      return deferred.promise;
+    };
+
     return {
       getTemples: getTemples,
+      getMessages: getMessages,
       isOfflineAvailable: isOfflineAvailable,
       registerDevice: registerDevice
     };

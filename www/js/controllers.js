@@ -1,6 +1,6 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $cordovaPush, $ionicPlatform, $cordovaSplashscreen) {
+.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $cordovaSplashscreen, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -11,9 +11,28 @@ angular.module('ayya1008.controllers', [])
 
   $ionicPlatform.ready(function(device) {
     var config = {
-      senderID: '975008491239'
+      iconColor: '#FF9933'
     };
-    $cordovaPush.register(config);
+    var push = window.PushNotification.init({
+      'android': {
+        senderID: '975008491239',
+        icon: 'ic_stat_lotus',
+        iconColor: '#FF9933'
+      }
+    });
+    push.on('registration', function(data) {
+      DataService.registerDevice({
+        token: data.registrationId,
+        platform: 'android'
+      });
+    });
+    push.on('notification', function(data) {
+      if (data.additionalData.coldstart) {
+        $scope.message = data;
+        $state.go('app.messages');
+        console.log(data);
+      }
+    });
   });
 
   $scope.server = {
@@ -37,42 +56,6 @@ angular.module('ayya1008.controllers', [])
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
     $cordovaSplashscreen.hide();
-  });
-
-  function handleAndroid(notification) {
-    console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
-    if (notification.event == "registered") {
-      $scope.regId = notification.regid;
-      storeDeviceToken("android");
-    } else if (notification.event == "message") {
-      // $cordovaDialogs.alert(notification.message, "Push Notification Received");
-      // $scope.$apply(function() {
-      //   $scope.notifications.push(JSON.stringify(notification.message));
-      // })
-    }
-    // else if (notification.event == "error")
-    // $cordovaDialogs.alert(notification.msg, "Push notification error event");
-    // else $cordovaDialogs.alert(notification.event, "Push notification handler - Unprocessed Event");
-  }
-
-  function storeDeviceToken(type) {
-    var device = {
-      platform: type,
-      token: $scope.regId
-    };
-
-    DataService.registerDevice(device);
-
-    // $http.post('http://192.168.1.16:8000/subscribe', JSON.stringify(user)).success(function(data, status) {
-    //   console.log("Token stored, device is successfully subscribed to receive push notifications.");
-    // }).error(function(data, status) {
-    //   console.log("Error storing device token." + data + " " + status)
-    // });
-  }
-
-  $scope.$on('$cordovaPush:notificationReceived', function(event, notification) {
-    console.log(JSON.stringify([notification]));
-    handleAndroid(notification);
   });
 })
 
@@ -102,6 +85,10 @@ angular.module('ayya1008.controllers', [])
   } else {
     $scope.title = 'நிழல்தாங்கள்கள்';
   }
+})
+
+.controller('MessagesCtrl', function($scope, DataService) {
+  console.log();
 })
 
 .controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService) {
