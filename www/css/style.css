@@ -119,4 +119,24 @@
   font-weight: bolder;
 }
 
+.bar-stable .button.button-icon {
+  color: white;
+}
+
+.half-screen {
+  height: 50vh;
+}
+
 .angular-google-map-container { height: 280px; }
+
+.home-icon {
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+}
+
+.row {
+  background-color: aliceblue;
+}

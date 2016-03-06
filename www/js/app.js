@@ -33,22 +33,24 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
 
   .state('app.temples', {
     url: '/temples/:templeType',
+    abstract: true,
     views: {
       'menuContent': {
-        templateUrl: 'templates/temples.html',
-        controller: 'TemplesCtrl'
+        template: '<ion-nav-view></ion-nav-view>'
       }
     }
   })
 
-  .state('app.temple', {
-    url: '/:templeId/temple',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/temple.html',
-        controller: 'TempleCtrl'
-      }
-    }
+  .state('app.temples.index', {
+    url: '',
+    templateUrl: 'templates/temples.html',
+    controller: 'TemplesCtrl'
+  })
+
+  .state('app.temples.detail', {
+    url: '/:templeId',
+    templateUrl: 'templates/temple.html',
+    controller: 'TempleCtrl'
   })
 
   .state('app.uchipadipu', {
@@ -74,6 +76,16 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     views: {
       'menuContent': {
         templateUrl: 'templates/contact.html'
+      }
+    }
+  })
+
+  .state('app.addtemple', {
+    url: '/add-temple',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/add-temple.html',
+        controller: 'addTempleCtrl'
       }
     }
   })

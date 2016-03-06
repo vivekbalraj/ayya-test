@@ -16,7 +16,7 @@ angular.module('ayya1008.controllers', [])
     var push = window.PushNotification.init({
       'android': {
         senderID: '975008491239',
-        icon: 'ic_stat_lotus',
+        icon: 'ic_stat_temple',
         iconColor: '#FF9933'
       }
     });
@@ -34,6 +34,9 @@ angular.module('ayya1008.controllers', [])
       }
     });
   });
+
+  $scope.tamilMonths = ["சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை", "மார்கழி", "தை", "மாசி", "பங்குனி"];
+  $scope.districts = ["அரியலூர்", "சென்னை", "கோயம்புத்தூர்", "கடலூர்", "தர்மபுரி", "திண்டுக்கல்", "ஈரோடு", "காஞ்சிபுரம்", "கன்னியாகுமரி", "கரூர்", "கிருஷ்ணகிரி", "மதுரை", "நாகப்பட்டினம்", "நாமக்கல்", "பெரம்பலூர்", "புதுக்கோட்டை", "இராமநாதபுரம்", "சேலம்", "சிவகங்கை", "தஞ்சாவூர்", "தேனி", "நீலகிரி", "திருநெல்வேலி", "திருவள்ளூர்", "திருவண்ணாமலை", "திருவாரூர்", "தூத்துக்குடி", "திருச்சிராப்பள்ளி", "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"];
 
   $scope.isOfflineAvailable = function() {
     return DataService.isOfflineAvailable();
@@ -55,8 +58,12 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('TemplesCtrl', function($scope, $stateParams, DataService) {
+.controller('TemplesCtrl', function($scope, $stateParams, DataService, $ionicHistory) {
   $scope.isSpinnerVisible = true;
+
+  $ionicHistory.nextViewOptions({
+    historyRoot: true
+  });
 
   var processTemples = function(temples) {
     $scope.temples = temples;
@@ -83,7 +90,9 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService) {
+.controller('addTempleCtrl', function(DataService) {})
+
+.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService, $ionicNavBarDelegate) {
 
   DataService.getTemples().then(function(temples) {
 
@@ -91,6 +100,10 @@ angular.module('ayya1008.controllers', [])
       id: parseInt($stateParams.templeId)
     });
 
+    $ionicNavBarDelegate.showBackButton(true);
+    $ionicNavBarDelegate.title($scope.temple.name);
+
+    console.log($scope.temple);
     $scope.temple.images = _.filter($scope.temple.images, function(url) {
       return url.indexOf('medium/missing.png') < 0;
     });

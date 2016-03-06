@@ -8,13 +8,13 @@
             <i ng-class="{'ion-chevron-down': d.closed, 'ion-chevron-up': !d.closed}"></i>
             {{district}}
           </ion-item>
-          <ion-item ng-repeat="temple in grouped[district]" href="#/app/{{temple.id}}/temple" ng-show="!d.closed">
+          <ion-item ng-repeat="temple in grouped[district]" href="#/app/temples/{{temple.temple_type.toLowerCase()}}/{{temple.id}}" ng-show="!d.closed">
             {{temple.name}}
           </ion-item>
         </div>
       </ion-list>
       <ion-list ng-if="templeType === 'pathi'">
-        <ion-item ng-repeat="temple in currentTemples" href="#/app/{{temple.id}}/temple" ng-show="!d.closed">
+        <ion-item ng-repeat="temple in currentTemples" href="#/app/temples/{{temple.temple_type.toLowerCase()}}/{{temple.id}}" ng-show="!d.closed">
           {{temple.name}}
         </ion-item>
       </ion-list>
