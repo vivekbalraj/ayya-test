@@ -94,7 +94,8 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     url: '/messages',
     views: {
       'menuContent': {
-        templateUrl: 'templates/messages.html'
+        templateUrl: 'templates/messages.html',
+        controller: 'messagesCtrl'
       }
     }
   });

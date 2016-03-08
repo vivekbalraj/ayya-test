@@ -2,7 +2,7 @@ angular.module('ayya1008.services', [])
   .service('DataService', function($http, $q) {
     var server = {
       url: 'http://ayya.herokuapp.com/api/v1/'
-      // url: 'http://localhost:3000/api/v1/'
+        // url: 'http://192.168.0.3:3000/api/v1/'
     };
 
     db = new loki('ayya1008.json', {
@@ -25,7 +25,9 @@ angular.module('ayya1008.services', [])
       searchObject.id = object.id;
       var result = collection.find(searchObject);
       if (result && result.length > 0) {
-        result = _.merge(object, result[0]);
+        object.$loki = result[0].$loki;
+        object.meta = result[0].meta;
+        result = object;
         this.db.getCollection(collectionName).update(result);
       } else {
         this.db.getCollection(collectionName).insert(object);

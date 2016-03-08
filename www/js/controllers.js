@@ -1,6 +1,6 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $cordovaSplashscreen, $state) {
+.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $cordovaSplashscreen, $state, $cordovaGoogleAnalytics) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,6 +8,8 @@ angular.module('ayya1008.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+  $cordovaGoogleAnalytics.startTrackerWithId('UA-73626070-1');
 
   $ionicPlatform.ready(function(device) {
     var config = {
@@ -30,12 +32,11 @@ angular.module('ayya1008.controllers', [])
       if (data.additionalData.coldstart) {
         $scope.message = data;
         $state.go('app.messages');
-        console.log(data);
       }
     });
   });
 
-  $scope.tamilMonths = ["சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை", "மார்கழி", "தை", "மாசி", "பங்குனி"];
+  $scope.tamilMonths = ["", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை", "மார்கழி", "தை", "மாசி", "பங்குனி"];
   $scope.districts = ["அரியலூர்", "சென்னை", "கோயம்புத்தூர்", "கடலூர்", "தர்மபுரி", "திண்டுக்கல்", "ஈரோடு", "காஞ்சிபுரம்", "கன்னியாகுமரி", "கரூர்", "கிருஷ்ணகிரி", "மதுரை", "நாகப்பட்டினம்", "நாமக்கல்", "பெரம்பலூர்", "புதுக்கோட்டை", "இராமநாதபுரம்", "சேலம்", "சிவகங்கை", "தஞ்சாவூர்", "தேனி", "நீலகிரி", "திருநெல்வேலி", "திருவள்ளூர்", "திருவண்ணாமலை", "திருவாரூர்", "தூத்துக்குடி", "திருச்சிராப்பள்ளி", "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"];
 
   $scope.isOfflineAvailable = function() {
@@ -45,7 +46,7 @@ angular.module('ayya1008.controllers', [])
   $scope.width = document.body.clientWidth - 20;
 
   $scope.share = function() {
-    $cordovaSocialSharing.share('Share the app to your friends: - ', null, null, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+    $cordovaSocialSharing.share('Try this Ayyavazhi app: - ', null, null, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
   };
 
   $scope.isOnline = function() {
@@ -58,8 +59,10 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('TemplesCtrl', function($scope, $stateParams, DataService, $ionicHistory) {
+.controller('TemplesCtrl', function($scope, $stateParams, DataService, $ionicHistory, $cordovaGoogleAnalytics) {
+
   $scope.isSpinnerVisible = true;
+  $cordovaGoogleAnalytics.trackView('Temple Screen');
 
   $ionicHistory.nextViewOptions({
     historyRoot: true
@@ -90,9 +93,19 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('addTempleCtrl', function(DataService) {})
+.controller('addTempleCtrl', function($scope) {
+  $scope.addTemple = function() {
+    console.log('say hello');
+  };
+})
 
-.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService, $ionicNavBarDelegate) {
+.controller('messagesCtrl', function($cordovaGoogleAnalytics) {
+  $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
+})
+
+.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService, $cordovaGoogleAnalytics) {
+
+  $cordovaGoogleAnalytics.trackView('Temple Screen');
 
   DataService.getTemples().then(function(temples) {
 
@@ -100,10 +113,6 @@ angular.module('ayya1008.controllers', [])
       id: parseInt($stateParams.templeId)
     });
 
-    $ionicNavBarDelegate.showBackButton(true);
-    $ionicNavBarDelegate.title($scope.temple.name);
-
-    console.log($scope.temple);
     $scope.temple.images = _.filter($scope.temple.images, function(url) {
       return url.indexOf('medium/missing.png') < 0;
     });
@@ -127,6 +136,7 @@ angular.module('ayya1008.controllers', [])
     }
 
     $scope.getDirections = function() {
+      $cordovaGoogleAnalytics.trackEvent('Map', 'Google maps opened');
       var posOptions = {
         timeout: 10000,
         enableHighAccuracy: false

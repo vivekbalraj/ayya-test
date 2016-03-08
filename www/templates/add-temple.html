@@ -1,60 +1,62 @@
 <ion-view view-title="கோவில் தகவல்" class="temple">
 
   <ion-content class="padding has-header">
-    <div class="list">
-      <label class="item item-input">
-        <input type="text" placeholder="பெயர்" ng-model="name">
-      </label>
-      <label class="item item-input">
-        <input type="number" placeholder="நிறுவப்பட்ட வருடம்" max="" min="1809" ng-model="year">
-      </label>
-      <label class="item item-input item-select">
-        <div class="input-label">
-          திருஏடு படிக்கும் மாதம்
-        </div>
-        <select>
-          <option ng-repeat="month in tamilMonths">{{month}}</option>
-        </select>
-      </label>
-      <label class="item item-input">
-        <input type="text" placeholder="தொடர்பு நபர்">
-      </label>
-      <label class="item item-input">
-        <input type="number" placeholder="மொபைல் எண்">
-      </label>
-      <label class="item item-input">
-        <input type="text" placeholder="கிராமம்">
-      </label>
-      <label class="item item-input">
-        <input type="text" placeholder="தாலுகா">
-      </label>
-      <label class="item item-input item-select">
-        <div class="input-label">
-          மாவட்டம்
-        </div>
-        <select>
-          <option ng-repeat="district in districts">{{district}}</option>
-        </select>
-      </label>
-      <label class="item item-input">
-        <input type="number" placeholder="அட்சரேகை">
-      </label>
-      <label class="item item-input">
-        <input type="number" placeholder="தீர்க்கரேகை">
-      </label>
-      <label class="item item-input">
-        <input type="number" placeholder="அஞ்சல் குறியீடு">
-      </label>
-      <label class="item item-input">
-        <textarea placeholder="முகவரி"></textarea>
-      </label>
-      <label class="item item-input">
-        <textarea placeholder="தகவல்"></textarea>
-      </label>
-      <button class="button button-block button-positive">
-        அனுப்பு
-      </button>
-    </div>
+    <form name="add-temple">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="பெயர்" ng-model="name" required>
+        </label>
+        <label class="item item-input">
+          <input type="number" placeholder="நிறுவப்பட்ட வருடம்" max="" min="1809" ng-model="year">
+        </label>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            திருஏடு படிக்கும் மாதம்
+          </div>
+          <select>
+            <option ng-repeat="month in tamilMonths">{{month}}</option>
+          </select>
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="தொடர்பு நபர்" ng-model="person">
+        </label>
+        <label class="item item-input">
+          <input type="number" placeholder="மொபைல் எண்" ng-model="mobile">
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="கிராமம்" ng-model="village">
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="தாலுகா" ng-model="taluk">
+        </label>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            மாவட்டம்
+          </div>
+          <select>
+            <option ng-repeat="district in districts">{{district}}</option>
+          </select>
+        </label>
+        <label class="item item-input">
+          <input type="number" placeholder="அட்சரேகை" ng-model="latitude">
+        </label>
+        <label class="item item-input">
+          <input type="number" placeholder="தீர்க்கரேகை" ng-model="longitude">
+        </label>
+        <label class="item item-input">
+          <input type="number" placeholder="அஞ்சல் குறியீடு" ng-model="pincode">
+        </label>
+        <label class="item item-input">
+          <textarea placeholder="முகவரி" ng-model="address"></textarea>
+        </label>
+        <label class="item item-input">
+          <textarea placeholder="தகவல்" ng-model="information"></textarea>
+        </label>
+        <button type="submit" class="button button-block button-positive" ng-click="addTemple()">
+          அனுப்பு
+        </button>
+      </div>
+    </form>
   </ion-content>
 
 </ion-view>
