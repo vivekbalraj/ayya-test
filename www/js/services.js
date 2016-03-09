@@ -100,10 +100,32 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
+    var addTemple = function(temple) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        $http({
+          method: 'POST',
+          url: server.url + 'temples',
+          data: temple,
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          deferred.resolve();
+        }, function(error) {
+          deferred.reject();
+        });
+      }
+      return deferred.promise;
+    };
+
     return {
       getTemples: getTemples,
       getMessages: getMessages,
       isOfflineAvailable: isOfflineAvailable,
-      registerDevice: registerDevice
+      registerDevice: registerDevice,
+      addTemple: addTemple
     };
   });

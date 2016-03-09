@@ -21,7 +21,7 @@
         <div class="card" ng-init="isCollapsed=true" ng-if="temple.information">
           <div class="item item-divider" ng-click="isCollapsed=!isCollapsed">
             <i ng-class="{'ion-chevron-down': isCollapsed, 'ion-chevron-up': !isCollapsed}"></i>
-            தலப்புராணம்
+            சிறப்புகள்
           </div>
           <div class="item item-text-wrap text-wrap" ng-show="!isCollapsed">
             {{temple.information}}
@@ -37,11 +37,17 @@
               <span class="circle">{{temple.founded_at}}</span>
                 துடக்கம்
             </div>
-            <div ng-if="temple.is_book_read" class="clearfix book other-info">
-              <img src="img/book.svg" class="temple-icon">திரு ஏடு வாசிப்பு நடைபெறும் நிழல்தாங்கள்.
-            </div>
             <div ng-if="temple.is_primary_thangal" class="clearfix temple other-info">
               <img src="img/temple.svg" class="temple-icon">அய்யா கால் நாட்டிக் கொடுத்த நிழல்தாங்கள்.
+            </div>
+            <div ng-if="temple.is_book_read && !temple.book_month" class="clearfix book other-info">
+              <img src="img/book.svg" class="temple-icon">திரு ஏடு வாசிப்பு நடைபெறும் நிழல்தாங்கள்.
+            </div>
+            <div ng-if="temple.priest_name" class="clearfix book other-info">
+              <img src="img/priest.svg" class="temple-icon"> {{temple.priest_name}}
+            </div>
+            <div ng-if="temple.book_month" class="clearfix book other-info">
+              <img src="img/book.svg" class="temple-icon"> {{temple.book_month}} மாதம் திரு ஏடு வாசிப்பு நடைபெறும்.
             </div>
           </div>
         </div>

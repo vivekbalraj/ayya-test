@@ -6,7 +6,7 @@
       </div>
 
       <div class="item item-body">
-        <img class="full-image" src="{{message.additionalData.picture}}">
+        <img class="full-image" src="{{message.additionalData.picture}}" ng-if="message.additionalData.picture">
         <p class="text-wrap" style="white-space: pre-line">{{message.message}}</p>
       </div>
     </div>
