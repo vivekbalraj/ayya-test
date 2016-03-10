@@ -167,7 +167,7 @@ angular.module('ayya1008.controllers', [])
   };
 })
 
-.controller('messagesCtrl', function($cordovaGoogleAnalytics) {
+.controller('messagesCtrl', function($cordovaGoogleAnalytics, $scope) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
   }
