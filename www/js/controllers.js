@@ -28,25 +28,25 @@ angular.module('ayya1008.controllers', [])
     var config = {
       iconColor: '#FF9933'
     };
-    var push = window.PushNotification.init({
-      'android': {
-        senderID: '975008491239',
-        icon: 'ic_stat_temple',
-        iconColor: '#FF9933'
-      }
-    });
-    push.on('registration', function(data) {
-      DataService.registerDevice({
-        token: data.registrationId,
-        platform: 'android'
-      });
-    });
-    push.on('notification', function(data) {
-      if (data.additionalData.coldstart) {
-        $scope.message = data;
-        $state.go('app.messages');
-      }
-    });
+    // var push = window.PushNotification.init({
+    //   'android': {
+    //     senderID: '975008491239',
+    //     icon: 'ic_stat_temple',
+    //     iconColor: '#FF9933'
+    //   }
+    // });
+    // push.on('registration', function(data) {
+    //   DataService.registerDevice({
+    //     token: data.registrationId,
+    //     platform: 'android'
+    //   });
+    // });
+    // push.on('notification', function(data) {
+    //   if (data.additionalData.coldstart) {
+    //     $scope.message = data;
+    //     $state.go('app.messages');
+    //   }
+    // });
   });
 
   $ionicPlatform.registerBackButtonAction(function() {
@@ -78,8 +78,8 @@ angular.module('ayya1008.controllers', [])
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
     $timeout(function() {
-      $cordovaSplashscreen.hide();
-    }, 1000)
+      // $cordovaSplashscreen.hide();
+    }, 3000);
   });
 })
 
@@ -171,6 +171,63 @@ angular.module('ayya1008.controllers', [])
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
   }
+})
+
+.controller('mapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation) {
+  if ($scope.isAnalyticsReady) {
+    $cordovaGoogleAnalytics.trackEvent('Maps', 'Maps screen view');
+  }
+
+  $ionicLoading.show();
+
+  DataService.getTemples().then(function(temples) {
+    temples = _.filter(temples, function(temple) {
+      return !!temple.latitude;
+    });
+
+    var posOptions = {
+      timeout: 10000,
+      enableHighAccuracy: false
+    };
+
+    $ionicLoading.hide();
+    $scope.map = {
+      center: {
+        latitude: 10.790483,
+        longitude: 78.704673
+      },
+      zoom: 7,
+      options: {
+        mapTypeControl: false,
+        streetViewControl: false
+      },
+      bounds: {
+        northeast: {
+          latitude: 14,
+          longitude: 81
+        },
+        southwest: {
+          latitude: 8,
+          longitude: 77
+        }
+      }
+    };
+
+    $scope.markers = [];
+    _.each(temples, function(temple) {
+      $scope.markers.push({
+        options: {
+          draggable: true
+        },
+        temple: temple,
+        id: temple.id,
+        center: {
+          latitude: temple.latitude,
+          longitude: temple.longitude
+        }
+      });
+    });
+  });
 })
 
 .controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService, $cordovaGoogleAnalytics) {

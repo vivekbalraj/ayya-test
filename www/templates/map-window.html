@@ -1,0 +1,20 @@
+<div class="mapinfowindow">
+  <h3>{{parameter.name}}</h3>
+  <div ng-if="parameter.founded_at" class="founded other-info">
+    <span class="circle">{{parameter.founded_at}}</span>
+      துடக்கம்
+  </div>
+  <div ng-if="parameter.is_primary_thangal" class="clearfix temple other-info">
+    <img src="img/temple.svg" class="temple-icon">அய்யா கால் நாட்டிக் கொடுத்த நிழல்தாங்கள்.
+  </div>
+  <div ng-if="parameter.is_book_read && !parameter.book_month" class="clearfix book other-info">
+    <img src="img/book.svg" class="temple-icon">திரு ஏடு வாசிப்பு நடைபெறும் நிழல்தாங்கள்.
+  </div>
+  <div ng-if="parameter.priest_name" class="clearfix book other-info">
+    <img src="img/priest.svg" class="temple-icon"> {{parameter.priest_name}}
+  </div>
+  <div ng-if="parameter.book_month" class="clearfix book other-info">
+    <img src="img/book.svg" class="temple-icon"> {{parameter.book_month}} மாதம் திரு ஏடு வாசிப்பு நடைபெறும்.
+  </div>
+  <a href="#/app/temples/{{parameter.temple_type.toLowerCase()}}/{{parameter.id}}">கோவிலுக்கு செல்ல</a>
+</div>

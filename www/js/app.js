@@ -90,6 +90,16 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     }
   })
 
+  .state('app.maps', {
+    url: '/maps',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/maps.html',
+        controller: 'mapsCtrl'
+      }
+    }
+  })
+
   .state('app.messages', {
     url: '/messages',
     views: {
