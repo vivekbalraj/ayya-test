@@ -53,20 +53,11 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     controller: 'TempleCtrl'
   })
 
-  .state('app.uchipadipu', {
-    url: '/uchipadipu',
+  .state('app.scriptures', {
+    url: '/scriptures',
     views: {
       'menuContent': {
-        templateUrl: 'templates/uchipadipu.html'
-      }
-    }
-  })
-
-  .state('app.ugapadipu', {
-    url: '/ugapadipu',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/ugapadipu.html'
+        templateUrl: 'templates/scriptures.html'
       }
     }
   })

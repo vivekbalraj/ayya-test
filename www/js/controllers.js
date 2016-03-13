@@ -78,7 +78,7 @@ angular.module('ayya1008.controllers', [])
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
     $timeout(function() {
-      // $cordovaSplashscreen.hide();
+      $cordovaSplashscreen.hide();
     }, 3000);
   });
 })

@@ -3,60 +3,69 @@
   <ion-content class="padding has-header">
     <form name="add-temple">
       <div class="list">
-        <label class="item item-input">
-          <input type="text" placeholder="பெயர்" ng-model="temple.name" required>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">பெயர்</span>
+          <input type="text" placeholder="திருச்செந்தூர் அவதார பதி" ng-model="temple.name" required>
         </label>
-        <label class="item item-input">
-          <input type="number" placeholder="நிறுவப்பட்ட வருடம்" max="2016" min="1809" ng-model="temple.year">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">நிறுவப்பட்ட வருடம்</span>
+          <input type="number" placeholder="1963" max="2016" min="1809" ng-model="temple.year">
         </label>
-        <label class="item item-input">
-          <input type="text" placeholder="பணிவிடையாளர் பெயர்" ng-model="temple.priest">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">பணிவிடையாளர் பெயர்</span>
+          <input type="text" placeholder="பாலன்" ng-model="temple.priest">
         </label>
-        <label class="item item-input">
-          <input type="url" placeholder="பேஸ்புக் பக்கம்" ng-model="temple.facebook">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">பேஸ்புக் பக்கம்</span>
+          <input type="url" placeholder="https://www.facebook.com/Kadambankulam/" ng-model="temple.facebook">
         </label>
-        <label class="item item-input item-select">
-          <div class="input-label">
-            திருஏடு படிக்கும் மாதம்
-          </div>
+        <label class="item item-input item-select item-stacked-label">
+          <span class="input-label">திருஏடு மாதம்</span>
           <select ng-model="temple.tamilMonth">
             <option ng-repeat="month in tamilMonths">{{month}}</option>
           </select>
         </label>
-        <label class="item item-input">
-          <input type="text" placeholder="தொடர்பு நபர்" ng-model="temple.person">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">தொடர்பு நபர்</span>
+          <input type="text" placeholder="சுப்பிரமணியம்ன்" ng-model="temple.person">
         </label>
-        <label class="item item-input">
-          <input type="number" placeholder="மொபைல் எண்" ng-model="temple.mobile">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">மொபைல் எண்</span>
+          <input type="tel" placeholder="+91-9611772683" ng-model="temple.mobile">
         </label>
-        <label class="item item-input">
-          <input type="text" placeholder="கிராமம்" ng-model="temple.village">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">கிராமம்</span>
+          <input type="text" placeholder="கடம்பன்குளம்" ng-model="temple.village">
         </label>
-        <label class="item item-input">
-          <input type="text" placeholder="தாலுகா" ng-model="temple.taluk">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">தாலுகா</span>
+          <input type="text" placeholder="ராதாபுரம்" ng-model="temple.taluk">
         </label>
-        <label class="item item-input item-select">
-          <div class="input-label">
-            மாவட்டம்
-          </div>
+        <label class="item item-input item-select item-stacked-label">
+          <span class="input-label">மாவட்டம்</span>
           <select ng-model="temple.districtOne">
             <option ng-repeat="district in districts">{{district}}</option>
           </select>
         </label>
-        <label class="item item-input">
-          <input type="number" placeholder="அட்சரேகை" ng-model="temple.latitude">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">அட்சரேகை</span>
+          <input type="number" placeholder="8.334413" ng-model="temple.latitude">
         </label>
-        <label class="item item-input">
-          <input type="number" placeholder="தீர்க்கரேகை" ng-model="temple.longitude">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">தீர்க்கரேகை</span>
+          <input type="number" placeholder="77.605804" ng-model="temple.longitude">
         </label>
-        <label class="item item-input">
-          <input type="number" placeholder="அஞ்சல் குறியீடு" ng-model="temple.pincode">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">அஞ்சல் குறியீடு</span>
+          <input type="number" placeholder="627109" ng-model="temple.pincode">
         </label>
-        <label class="item item-input">
-          <textarea placeholder="முகவரி" ng-model="temple.address"></textarea>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">முகவரி</span>
+          <textarea ng-model="temple.address"></textarea>
         </label>
-        <label class="item item-input">
-          <textarea placeholder="தகவல்" ng-model="temple.information"></textarea>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">தகவல்</span>
+          <textarea ng-model="temple.information"></textarea>
         </label>
         <button type="submit" class="button button-block button-positive" ng-click="addTemple()">
           அனுப்பு

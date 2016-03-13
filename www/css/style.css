@@ -137,6 +137,14 @@
   width: 50%;
 }
 
+.global-map .angular-google-map {
+  height: 100%;
+}
+
 .global-map .angular-google-map-container {
-  height: 100vh;
+  height: 100%;
+}
+
+.scriptures .has-header {
+  padding-top: 45px;
 }
