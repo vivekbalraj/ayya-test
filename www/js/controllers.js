@@ -1,6 +1,6 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $cordovaSplashscreen, $state, $cordovaGoogleAnalytics, $timeout) {
+.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $state, $cordovaGoogleAnalytics) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -28,25 +28,25 @@ angular.module('ayya1008.controllers', [])
     var config = {
       iconColor: '#FF9933'
     };
-    // var push = window.PushNotification.init({
-    //   'android': {
-    //     senderID: '975008491239',
-    //     icon: 'ic_stat_temple',
-    //     iconColor: '#FF9933'
-    //   }
-    // });
-    // push.on('registration', function(data) {
-    //   DataService.registerDevice({
-    //     token: data.registrationId,
-    //     platform: 'android'
-    //   });
-    // });
-    // push.on('notification', function(data) {
-    //   if (data.additionalData.coldstart) {
-    //     $scope.message = data;
-    //     $state.go('app.messages');
-    //   }
-    // });
+    var push = window.PushNotification.init({
+      'android': {
+        senderID: '975008491239',
+        icon: 'ic_stat_temple',
+        iconColor: '#FF9933'
+      }
+    });
+    push.on('registration', function(data) {
+      DataService.registerDevice({
+        token: data.registrationId,
+        platform: 'android'
+      });
+    });
+    push.on('notification', function(data) {
+      if (data.additionalData.coldstart) {
+        $scope.message = data;
+        $state.go('app.messages');
+      }
+    });
   });
 
   $ionicPlatform.registerBackButtonAction(function() {
@@ -77,22 +77,15 @@ angular.module('ayya1008.controllers', [])
 
   DataService.getTemples(true).then(function(temples) {
     $scope.$broadcast('TEMPLES_RECEIVED', temples);
-    $timeout(function() {
-      $cordovaSplashscreen.hide();
-    }, 3000);
   });
 })
 
-.controller('TemplesCtrl', function($scope, $stateParams, DataService, $ionicHistory, $cordovaGoogleAnalytics) {
+.controller('TemplesCtrl', function($scope, $stateParams, DataService, $cordovaGoogleAnalytics, $cordovaSplashscreen, $timeout) {
 
   $scope.isSpinnerVisible = true;
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackView('Temple Screen');
   }
-
-  $ionicHistory.nextViewOptions({
-    historyRoot: true
-  });
 
   var processTemples = function(temples) {
     $scope.temples = temples;
@@ -102,6 +95,9 @@ angular.module('ayya1008.controllers', [])
     $scope.grouped = _.groupBy($scope.currentTemples, 'district');
     $scope.districts = Object.keys($scope.grouped);
     $scope.isSpinnerVisible = false;
+    $timeout(function() {
+      $cordovaSplashscreen.hide();
+    }, 1000);
   };
 
   DataService.getTemples().then(processTemples);
@@ -199,7 +195,8 @@ angular.module('ayya1008.controllers', [])
       zoom: 7,
       options: {
         mapTypeControl: false,
-        streetViewControl: false
+        streetViewControl: false,
+        draggable: true
       },
       bounds: {
         northeast: {
@@ -275,12 +272,15 @@ angular.module('ayya1008.controllers', [])
         var destination = [$scope.temple.latitude, $scope.temple.longitude];
         var start = [position.coords.latitude, position.coords.longitude];
         $cordovaLaunchNavigator.navigate(destination, start);
+      }, function(err) {
+        var destination = [$scope.temple.latitude, $scope.temple.longitude];
+        $cordovaLaunchNavigator.navigate(destination, null);
       });
     };
 
     $scope.marker = {
       options: {
-        draggable: true
+        draggable: false
       },
       center: {
         latitude: $scope.temple.latitude,
