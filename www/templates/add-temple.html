@@ -1,13 +1,20 @@
-<ion-view view-title="கோவில் தகவல்" class="temple">
+<ion-view view-title="தாங்கல் தகவல்" class="temple">
 
   <ion-content class="padding has-header">
     <form name="templeForm" novalidate>
       <div class="list">
         <label class="item item-input item-stacked-label">
-          <span class="input-label">கோவில் பெயர் *</span>
+          <span class="input-label">தாங்கல் பெயர் *</span>
           <input type="text" placeholder="திருச்செந்தூர் அவதார பதி" ng-model="temple.name" required name="name">
           <div ng-messages="templeForm.name.$error" style="color:maroon" role="alert" ng-if='templeForm.name.$dirty'>
             <div ng-message="required">பெயர் தேவை</div>
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">மொபைல் எண் *</span>
+          <input type="tel" placeholder="+91-9611772683" ng-model="temple.mobile" name="mobile" required>
+          <div ng-messages="templeForm.mobile.$error" style="color:maroon" role="alert" ng-if='templeForm.mobile.$dirty'>
+            <div ng-message="required">மொபைல் எண் தேவை</div>
           </div>
         </label>
         <label class="item item-input item-stacked-label">
@@ -36,13 +43,6 @@
           <input type="text" placeholder="சுப்பிரமணியம்ன்" ng-model="temple.person">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">மொபைல் எண் *</span>
-          <input type="tel" placeholder="+91-9611772683" ng-model="temple.mobile" name="mobile" required>
-          <div ng-messages="templeForm.mobile.$error" style="color:maroon" role="alert" ng-if='templeForm.mobile.$dirty'>
-            <div ng-message="required">மொபைல் எண் தேவை</div>
-          </div>
-        </label>
-        <label class="item item-input item-stacked-label">
           <span class="input-label">கிராமம்</span>
           <input type="text" placeholder="கடம்பன்குளம்" ng-model="temple.village">
         </label>
@@ -57,11 +57,11 @@
           </select>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">அட்சரேகை</span>
+          <span class="input-label">அட்சரேகை (Latitude)</span>
           <input type="number" placeholder="8.334413" ng-model="temple.latitude">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">தீர்க்கரேகை</span>
+          <span class="input-label">தீர்க்கரேகை (Longitude)</span>
           <input type="number" placeholder="77.605804" ng-model="temple.longitude">
         </label>
         <label class="item item-input item-stacked-label">

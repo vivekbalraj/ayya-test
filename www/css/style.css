@@ -139,6 +139,7 @@
 
 .global-map .angular-google-map {
   height: 100%;
+  padding-top: 45px;
 }
 
 .global-map .angular-google-map-container {

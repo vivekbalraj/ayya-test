@@ -115,7 +115,7 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('addTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup) {
+.controller('addTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup, $ionicLoading) {
   $scope.temple = {
     name: '',
     year: '',
@@ -134,6 +134,7 @@ angular.module('ayya1008.controllers', [])
     priest: ''
   };
   $scope.addTemple = function() {
+    $ionicLoading.show();
     if ($scope.temple.name && $scope.temple.mobile) {
       DataService.addTemple({
         name: $scope.temple.name,
@@ -152,12 +153,14 @@ angular.module('ayya1008.controllers', [])
         facebook_page_url: $scope.facebook,
         priest_name: $scope.priest
       }).then(function() {
+        $ionicLoading.hide();
         $ionicPopup.alert({
           title: 'வெற்றி',
           template: 'மதிப்பாய்வு முடிந்த பிறகு பிரதிபலிக்கும்'
         });
         $location.path('/#/app/temples/pathi');
       }, function() {
+        $ionicLoading.hide();
         $cordovaToast.showLongBottom('மீண்டும் முயற்சி செய்');
       });
     } else {
@@ -182,7 +185,7 @@ angular.module('ayya1008.controllers', [])
 
   $http({
     method: 'GET',
-    url: '../data/scriptures.json',
+    url: '../www/data/scriptures.json',
     data: {},
     transformResponse: function(data, headersGetter, status) {
       return {
@@ -202,7 +205,7 @@ angular.module('ayya1008.controllers', [])
   $scope.scriptureId = parseInt($stateParams.scriptureId);
   $http({
     method: 'GET',
-    url: '../data/scriptures.json',
+    url: '../www/data/scriptures.json',
     data: {},
     transformResponse: function(data, headersGetter, status) {
       return {
