@@ -115,7 +115,7 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('addTempleCtrl', function($scope, DataService, $cordovaToast, $location) {
+.controller('addTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup) {
   $scope.temple = {
     name: '',
     year: '',
@@ -134,7 +134,7 @@ angular.module('ayya1008.controllers', [])
     priest: ''
   };
   $scope.addTemple = function() {
-    if ($scope.temple.name) {
+    if ($scope.temple.name && $scope.temple.mobile) {
       DataService.addTemple({
         name: $scope.temple.name,
         founded_at: $scope.temple.year,
@@ -152,24 +152,72 @@ angular.module('ayya1008.controllers', [])
         facebook_page_url: $scope.facebook,
         priest_name: $scope.priest
       }).then(function() {
-        $cordovaToast.showLongBottom('மதிப்பாய்வு முடிந்த பிறகு பிரதிபலிக்கும்');
+        $ionicPopup.alert({
+          title: 'வெற்றி',
+          template: 'மதிப்பாய்வு முடிந்த பிறகு பிரதிபலிக்கும்'
+        });
         $location.path('/#/app/temples/pathi');
       }, function() {
         $cordovaToast.showLongBottom('மீண்டும் முயற்சி செய்');
       });
     } else {
-      $cordovaToast.showLongBottom('பெயர் காலியாக இருக்க முடியாது');
+      $ionicPopup.alert({
+        title: 'பிழை',
+        template: 'பெயர் மற்றும் மொபைல் எண் காலியாக இருக்க முடியாது'
+      });
     }
   };
 })
 
-.controller('messagesCtrl', function($cordovaGoogleAnalytics, $scope) {
+.controller('MessagesCtrl', function($cordovaGoogleAnalytics, $scope) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
   }
 })
 
-.controller('mapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation) {
+.controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope, $http) {
+  if ($scope.isAnalyticsReady) {
+    $cordovaGoogleAnalytics.trackEvent('Scripture', 'Scripture list');
+  }
+
+  $http({
+    method: 'GET',
+    url: '../data/scriptures.json',
+    data: {},
+    transformResponse: function(data, headersGetter, status) {
+      return {
+        data: data
+      };
+    }
+  }).then(function(response) {
+    $scope.scriptures = JSON.parse(response.data.data);
+  });
+})
+
+.controller('ScriptureCtrl', function($cordovaGoogleAnalytics, $scope, $stateParams, $http) {
+  if ($scope.isAnalyticsReady) {
+    $cordovaGoogleAnalytics.trackEvent('Scripture', 'Scripture Read');
+  }
+
+  $scope.scriptureId = parseInt($stateParams.scriptureId);
+  $http({
+    method: 'GET',
+    url: '../data/scriptures.json',
+    data: {},
+    transformResponse: function(data, headersGetter, status) {
+      return {
+        data: data
+      };
+    }
+  }).then(function(response) {
+    $scope.scriptures = JSON.parse(response.data.data);
+    $scope.scripture = _.find($scope.scriptures, {
+      id: $scope.scriptureId
+    });
+  });
+})
+
+.controller('MapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation, $timeout) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Maps', 'Maps screen view');
   }
@@ -177,6 +225,8 @@ angular.module('ayya1008.controllers', [])
   $ionicLoading.show();
 
   DataService.getTemples().then(function(temples) {
+    $scope.markers = [];
+
     temples = _.filter(temples, function(temple) {
       return !!temple.latitude;
     });
@@ -186,7 +236,31 @@ angular.module('ayya1008.controllers', [])
       enableHighAccuracy: false
     };
 
-    $ionicLoading.hide();
+    $cordovaGeolocation.getCurrentPosition(posOptions).then(function(position) {
+      var blue = {
+        // path: 'M-7,0a7,7 0 1,0 14,0a7,7 0 1,0 -14,0',
+        // fillColor: '#3E82F7',
+        // fillOpacity: 0.8,
+        // scale: 1,
+        // strokeColor: '#FFFFFF',
+        // strokeWeight: 3
+        url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|3E82F7'
+      };
+      $scope.markers.push({
+        options: {
+          draggable: false,
+          icon: blue
+        },
+        id: -100,
+        center: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+      });
+    }).finally(function() {
+      $timeout($ionicLoading.hide, 50);
+    });
+
     $scope.map = {
       center: {
         latitude: 10.790483,
@@ -210,11 +284,13 @@ angular.module('ayya1008.controllers', [])
       }
     };
 
-    $scope.markers = [];
     _.each(temples, function(temple) {
       $scope.markers.push({
         options: {
-          draggable: true
+          draggable: true,
+          icon: {
+            url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF9933'
+          }
         },
         temple: temple,
         id: temple.id,
@@ -237,6 +313,8 @@ angular.module('ayya1008.controllers', [])
     $scope.temple = _.find(temples, {
       id: parseInt($stateParams.templeId)
     });
+
+    $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.id, $scope.temple.name);
 
     $scope.temple.images = _.filter($scope.temple.images, function(url) {
       return url.indexOf('medium/missing.png') < 0;

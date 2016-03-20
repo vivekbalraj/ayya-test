@@ -1,15 +1,18 @@
 <ion-view view-title="கோவில் தகவல்" class="temple">
 
   <ion-content class="padding has-header">
-    <form name="add-temple">
+    <form name="templeForm" novalidate>
       <div class="list">
         <label class="item item-input item-stacked-label">
-          <span class="input-label">பெயர்</span>
-          <input type="text" placeholder="திருச்செந்தூர் அவதார பதி" ng-model="temple.name" required>
+          <span class="input-label">கோவில் பெயர் *</span>
+          <input type="text" placeholder="திருச்செந்தூர் அவதார பதி" ng-model="temple.name" required name="name">
+          <div ng-messages="templeForm.name.$error" style="color:maroon" role="alert" ng-if='templeForm.name.$dirty'>
+            <div ng-message="required">பெயர் தேவை</div>
+          </div>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">நிறுவப்பட்ட வருடம்</span>
-          <input type="number" placeholder="1963" max="2016" min="1809" ng-model="temple.year">
+          <input type="number" placeholder="1963" max="2016" min="1809" ng-model="temple.year" name="year">
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">பணிவிடையாளர் பெயர்</span>
@@ -17,7 +20,10 @@
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">பேஸ்புக் பக்கம்</span>
-          <input type="url" placeholder="https://www.facebook.com/Kadambankulam/" ng-model="temple.facebook">
+          <input type="url" placeholder="https://www.facebook.com/Kadambankulam/" name="url" ng-model="temple.facebook">
+          <div ng-messages="templeForm.url.$error" style="color:maroon" role="alert" ng-if='templeForm.$dirty'>
+            <div ng-message="url">தவறான URL</div>
+          </div>
         </label>
         <label class="item item-input item-select item-stacked-label">
           <span class="input-label">திருஏடு மாதம்</span>
@@ -30,8 +36,11 @@
           <input type="text" placeholder="சுப்பிரமணியம்ன்" ng-model="temple.person">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">மொபைல் எண்</span>
-          <input type="tel" placeholder="+91-9611772683" ng-model="temple.mobile">
+          <span class="input-label">மொபைல் எண் *</span>
+          <input type="tel" placeholder="+91-9611772683" ng-model="temple.mobile" name="mobile" required>
+          <div ng-messages="templeForm.mobile.$error" style="color:maroon" role="alert" ng-if='templeForm.mobile.$dirty'>
+            <div ng-message="required">மொபைல் எண் தேவை</div>
+          </div>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">கிராமம்</span>

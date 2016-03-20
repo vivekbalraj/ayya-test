@@ -1,8 +1,12 @@
 <ion-view view-title="வரைபடம்" class="global-map">
-  <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options" bouns="map.bounds">
+  <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options" bouns="map.bounds" control="googlemap">
     <ui-gmap-marker idKey="marker.id" coords="marker.center" options="marker.options" ng-repeat="marker in markers track by $index">
       <ui-gmap-window ng-cloak templateUrl="'templates/map-window.html'" templateParameter="marker.temple">
       </ui-gmap-window>
     </ui-gmap-marker>
+    <!-- <ui-gmap-window ng-cloak templateUrl="'templates/map-window.html'" templateParameter="marker.temple" click="'onClick'" events="markers.events">
+    </ui-gmap-window>
+    <ui-gmap-markers idKey="id" models="markers" coords="'center'" options="'options'">
+    </ui-gmap-markers> -->
   </ui-gmap-google-map>
 </ion-view>

@@ -24,11 +24,11 @@
         <ion-item menu-close href="#/app/temples/thangal">
           நிழல்தாங்கள்கள்
         </ion-item>
-        <ion-item menu-close href="#/app/maps">
+        <ion-item menu-close href="#/app/maps" ng-if="isOnline()">
           வரைபடம்
         </ion-item>
         <ion-item menu-close href="#/app/scriptures">
-          வேதம்
+          வேதங்கள்
         </ion-item>
         <ion-item menu-close href="#/app/add-temple" ng-if="isOnline()">
           கோவிலை சேர்க்க

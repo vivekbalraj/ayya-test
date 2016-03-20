@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps'])
+angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps', 'ngMessages'])
 
 .run(function($ionicPlatform, $http) {
   $ionicPlatform.ready(function() {
@@ -55,11 +55,24 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
 
   .state('app.scriptures', {
     url: '/scriptures',
+    abstract: true,
     views: {
       'menuContent': {
-        templateUrl: 'templates/scriptures.html'
+        template: '<ion-nav-view></ion-nav-view>'
       }
     }
+  })
+
+  .state('app.scriptures.index', {
+    url: '',
+    templateUrl: 'templates/scriptures.html',
+    controller: 'ScripturesCtrl'
+  })
+
+  .state('app.scriptures.detail', {
+    url: '/:scriptureId',
+    templateUrl: 'templates/scripture.html',
+    controller: 'ScriptureCtrl'
   })
 
   .state('app.contact', {
@@ -86,7 +99,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     views: {
       'menuContent': {
         templateUrl: 'templates/maps.html',
-        controller: 'mapsCtrl'
+        controller: 'MapsCtrl'
       }
     }
   })
@@ -96,7 +109,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     views: {
       'menuContent': {
         templateUrl: 'templates/messages.html',
-        controller: 'messagesCtrl'
+        controller: 'MessagesCtrl'
       }
     }
   });
