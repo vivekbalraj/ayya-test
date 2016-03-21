@@ -28,25 +28,25 @@ angular.module('ayya1008.controllers', [])
     var config = {
       iconColor: '#FF9933'
     };
-    var push = window.PushNotification.init({
-      'android': {
-        senderID: '975008491239',
-        icon: 'ic_stat_temple',
-        iconColor: '#FF9933'
-      }
-    });
-    push.on('registration', function(data) {
-      DataService.registerDevice({
-        token: data.registrationId,
-        platform: 'android'
-      });
-    });
-    push.on('notification', function(data) {
-      if (data.additionalData.coldstart) {
-        $scope.message = data;
-        $state.go('app.messages');
-      }
-    });
+    // var push = window.PushNotification.init({
+    //   'android': {
+    //     senderID: '975008491239',
+    //     icon: 'ic_stat_temple',
+    //     iconColor: '#FF9933'
+    //   }
+    // });
+    // push.on('registration', function(data) {
+    //   DataService.registerDevice({
+    //     token: data.registrationId,
+    //     platform: 'android'
+    //   });
+    // });
+    // push.on('notification', function(data) {
+    //   if (data.additionalData.coldstart) {
+    //     $scope.message = data;
+    //     $state.go('app.messages');
+    //   }
+    // });
   });
 
   $ionicPlatform.registerBackButtonAction(function() {
@@ -288,6 +288,11 @@ angular.module('ayya1008.controllers', [])
     };
 
     _.each(temples, function(temple) {
+      var cars = [];
+      _.each(temple.cars, function(car) {
+        cars.push(car.name);
+      });
+      temple.cars = cars.join(', ');
       $scope.markers.push({
         options: {
           draggable: true,
@@ -316,6 +321,14 @@ angular.module('ayya1008.controllers', [])
     $scope.temple = _.find(temples, {
       id: parseInt($stateParams.templeId)
     });
+
+    var cars = [];
+
+    _.each($scope.temple.cars, function(car) {
+      cars.push(car.name);
+    });
+
+    $scope.temple.cars = cars.join(', ');
 
     $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.id, $scope.temple.name);
 
