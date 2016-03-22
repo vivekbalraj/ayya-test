@@ -69,7 +69,7 @@
 }
 
 .circle {
-  background-color: #4B14CC;
+  background-color: #FF9933;
   border-radius: 50%;
   color: #FFF;
   display: inline-block;
@@ -101,7 +101,7 @@
 }
 
 .directions button {
-  color: #4B14CC !important;
+  color: #FF9933 !important;
 }
 
 .text-wrap {

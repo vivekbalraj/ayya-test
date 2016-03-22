@@ -4,7 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps', 'ngMessages'])
+angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps',
+  'ngMessages'])
 
 .run(function($ionicPlatform, $http) {
   $ionicPlatform.ready(function() {
@@ -89,7 +90,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     views: {
       'menuContent': {
         templateUrl: 'templates/add-temple.html',
-        controller: 'addTempleCtrl'
+        controller: 'AddTempleCtrl'
       }
     }
   })

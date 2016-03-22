@@ -123,7 +123,7 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('addTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup, $ionicLoading) {
+.controller('AddTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup, $ionicLoading) {
   $scope.temple = {
     name: '',
     year: '',
