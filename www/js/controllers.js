@@ -1,6 +1,7 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform, $state, $cordovaGoogleAnalytics) {
+.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform,
+  $state, $cordovaGoogleAnalytics) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -28,25 +29,25 @@ angular.module('ayya1008.controllers', [])
     var config = {
       iconColor: '#FF9933'
     };
-    // var push = window.PushNotification.init({
-    //   'android': {
-    //     senderID: '975008491239',
-    //     icon: 'ic_stat_temple',
-    //     iconColor: '#FF9933'
-    //   }
-    // });
-    // push.on('registration', function(data) {
-    //   DataService.registerDevice({
-    //     token: data.registrationId,
-    //     platform: 'android'
-    //   });
-    // });
-    // push.on('notification', function(data) {
-    //   if (data.additionalData.coldstart) {
-    //     $scope.message = data;
-    //     $state.go('app.messages');
-    //   }
-    // });
+    var push = window.PushNotification.init({
+      'android': {
+        senderID: '975008491239',
+        icon: 'ic_stat_temple',
+        iconColor: '#FF9933'
+      }
+    });
+    push.on('registration', function(data) {
+      DataService.registerDevice({
+        token: data.registrationId,
+        platform: 'android'
+      });
+    });
+    push.on('notification', function(data) {
+      if (data.additionalData.coldstart) {
+        $scope.message = data;
+        $state.go('app.messages');
+      }
+    });
   });
 
   $ionicPlatform.registerBackButtonAction(function() {
@@ -57,9 +58,14 @@ angular.module('ayya1008.controllers', [])
     }
   }, 100);
 
-  $scope.tamilMonths = ["", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை", "மார்கழி", "தை", "மாசி", "பங்குனி"];
+  $scope.tamilMonths = ["", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை",
+    "மார்கழி", "தை", "மாசி", "பங்குனி"];
 
-  $scope.districts = ["அரியலூர்", "சென்னை", "கோயம்புத்தூர்", "கடலூர்", "தர்மபுரி", "திண்டுக்கல்", "ஈரோடு", "காஞ்சிபுரம்", "கன்னியாகுமரி", "கரூர்", "கிருஷ்ணகிரி", "மதுரை", "நாகப்பட்டினம்", "நாமக்கல்", "பெரம்பலூர்", "புதுக்கோட்டை", "இராமநாதபுரம்", "சேலம்", "சிவகங்கை", "தஞ்சாவூர்", "தேனி", "நீலகிரி", "திருநெல்வேலி", "திருவள்ளூர்", "திருவண்ணாமலை", "திருவாரூர்", "தூத்துக்குடி", "திருச்சிராப்பள்ளி", "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"];
+  $scope.districts = ["அரியலூர்", "சென்னை", "கோயம்புத்தூர்", "கடலூர்", "தர்மபுரி", "திண்டுக்கல்", "ஈரோடு",
+    "காஞ்சிபுரம்", "கன்னியாகுமரி", "கரூர்", "கிருஷ்ணகிரி", "மதுரை", "நாகப்பட்டினம்", "நாமக்கல்",
+    "பெரம்பலூர்", "புதுக்கோட்டை", "இராமநாதபுரம்", "சேலம்", "சிவகங்கை", "தஞ்சாவூர்", "தேனி", "நீலகிரி",
+    "திருநெல்வேலி", "திருவள்ளூர்", "திருவண்ணாமலை", "திருவாரூர்", "தூத்துக்குடி", "திருச்சிராப்பள்ளி",
+    "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"];
 
   $scope.isOfflineAvailable = function() {
     return DataService.isOfflineAvailable();
@@ -68,7 +74,8 @@ angular.module('ayya1008.controllers', [])
   $scope.width = document.body.clientWidth - 20;
 
   $scope.share = function() {
-    $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+    $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null,
+      'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
   };
 
   $scope.isOnline = function() {
@@ -80,7 +87,8 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('TemplesCtrl', function($scope, $stateParams, DataService, $cordovaGoogleAnalytics, $cordovaSplashscreen, $timeout) {
+.controller('TemplesCtrl', function($scope, $stateParams, DataService, $cordovaGoogleAnalytics,
+  $cordovaSplashscreen, $timeout) {
 
   $scope.isSpinnerVisible = true;
   if ($scope.isAnalyticsReady) {
@@ -220,7 +228,8 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('MapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation, $timeout) {
+.controller('MapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation,
+  $timeout) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Maps', 'Maps screen view');
   }
@@ -266,10 +275,10 @@ angular.module('ayya1008.controllers', [])
 
     $scope.map = {
       center: {
-        latitude: 10.790483,
-        longitude: 78.704673
+        latitude: 8.713913,
+        longitude: 77.756652
       },
-      zoom: 7,
+      zoom: 9,
       options: {
         mapTypeControl: false,
         streetViewControl: false,
@@ -311,7 +320,8 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService, $cordovaGoogleAnalytics) {
+.controller('TempleCtrl', function($scope, $stateParams, $cordovaGeolocation, $cordovaLaunchNavigator, DataService,
+  $cordovaGoogleAnalytics) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackView('Temple Screen');
   }
@@ -330,7 +340,9 @@ angular.module('ayya1008.controllers', [])
 
     $scope.temple.cars = cars.join(', ');
 
-    $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.id, $scope.temple.name);
+    if ($scope.isAnalyticsReady) {
+      $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.id, $scope.temple.name);
+    }
 
     $scope.temple.images = _.filter($scope.temple.images, function(url) {
       return url.indexOf('medium/missing.png') < 0;
@@ -342,12 +354,12 @@ angular.module('ayya1008.controllers', [])
     }
 
     $scope.temple.events = _.chain($scope.temple.events).filter(function(event) {
-      return new Date(event.date) >= new Date();
+      return new Date(event.start_date) >= new Date() || !!!event.start_date;
     }).map(function(temple) {
       temple.templeName = $scope.temple.name;
       return temple;
     }).sortBy(function(event) {
-      return new Date(event.date);
+      return new Date(event.start_date);
     }).value();
 
     if (!$scope.$$phase) {
