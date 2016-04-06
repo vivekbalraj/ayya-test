@@ -119,7 +119,7 @@ angular.module('ayya1008.controllers', [])
   if ($stateParams.templeType === 'pathi') {
     $scope.title = 'பதிகள்';
   } else {
-    $scope.title = 'நிழல்தாங்கள்கள்';
+    $scope.title = 'நிழல்தாங்கல்கள்';
   }
 })
 
@@ -180,10 +180,16 @@ angular.module('ayya1008.controllers', [])
   };
 })
 
-.controller('MessagesCtrl', function($cordovaGoogleAnalytics, $scope) {
+.controller('MessagesCtrl', function($cordovaGoogleAnalytics, $scope, DataService) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
   }
+
+  DataService.getTemples().then(function(temples) {
+    $scope.temple = _.find(temples, function(temple) {
+      return temple.id === parseInt($scope.message.additionalData.temple);
+    });
+  });
 })
 
 .controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope, $http) {
@@ -341,7 +347,7 @@ angular.module('ayya1008.controllers', [])
     $scope.temple.cars = cars.join(', ');
 
     if ($scope.isAnalyticsReady) {
-      $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.id, $scope.temple.name);
+      $cordovaGoogleAnalytics.trackEvent('Temple', 'Temple viewed', $scope.temple.name, $scope.temple.id);
     }
 
     $scope.temple.images = _.filter($scope.temple.images, function(url) {

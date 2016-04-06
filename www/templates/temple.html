@@ -77,8 +77,7 @@
           <div class="item item-text-wrap">
             <div class="row">
               <h4 class="center col">
-                <div ng-if="temple.contact_person">{{temple.contact_person}},</div>
-                <div ng-if="temple.street_address">{{temple.street_address}},</div>
+                <div ng-if="temple.street_address" class="text-wrap">{{temple.street_address}},</div>
                 <div ng-if="temple.village">{{temple.village}},</div>
                 <div ng-if="temple.taluk">{{temple.taluk}},</div>
                 <div ng-if="temple.district">{{temple.district}}.</div>
@@ -120,7 +119,7 @@
               </span>
             </h4>
           </div>
-          <div class="item item-text-wrap" ng-if="event.description" ng-show="!d.closed">
+          <div class="item item-text-wrap text-wrap" ng-if="event.description" ng-show="!d.closed">
             {{event.description}}
           </div>
         </div>

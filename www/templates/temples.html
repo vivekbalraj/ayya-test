@@ -4,7 +4,7 @@
       <ion-spinner icon="android" ng-if="isSpinnerVisible" class="spinner-positive"></ion-spinner>
       <!-- TODO: Close all other districts on click of one. Open only one district at any given time.  -->
       <ion-list ng-if="templeType === 'thangal'">
-        <div ng-repeat="district in districts track by $index" ng-init="d.closed=$index===0?false:true">
+        <div ng-repeat="district in districts track by $index" ng-init="d.closed=true">
           <ion-item class="item-divider" ng-click="d.closed=!d.closed" >
             <i ng-class="{'ion-chevron-down': d.closed, 'ion-chevron-up': !d.closed}"></i>
             {{district}}

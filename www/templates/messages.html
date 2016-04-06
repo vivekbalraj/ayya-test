@@ -1,13 +1,21 @@
-<ion-view view-title="கருத்துகள்" cache-view="false">
+<ion-view cache-view="false">
+
+  <ion-nav-title>
+    {{message.additionalData.temple ? "நிகழ்வு" : "கருத்துகள்" }}
+  </ion-nav-title>
+
   <ion-content>
     <div class="card">
       <div class="item">
-        <h2>{{message.title}}</h2>
+        <h2>{{message.title}} - {{temple.name}}</h2>
       </div>
 
       <div class="item item-body">
         <img class="full-image" src="{{message.additionalData.picture}}" ng-if="message.additionalData.picture">
         <p class="text-wrap" style="white-space: pre-line">{{message.message}}</p>
+        <a class="button button-full button-positive" ng-href="#app/temples/{{temple.type.toLowerCase()}}/{{temple.id}}" ng-if="message.additionalData.temple">
+          கோவிலுக்கு செல்ல
+        </a>
       </div>
     </div>
   </ion-content>
