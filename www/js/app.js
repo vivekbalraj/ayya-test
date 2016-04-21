@@ -105,6 +105,16 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
     }
   })
 
+  .state('app.feed', {
+    url: '/feed',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/feed.html',
+        controller: 'FeedCtrl'
+      }
+    }
+  })
+
   .state('app.messages', {
     url: '/messages',
     views: {
@@ -121,6 +131,6 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/temples/pathi');
+  $urlRouterProvider.otherwise('/app/feed');
   $ionicConfigProvider.tabs.position('bottom');
 });

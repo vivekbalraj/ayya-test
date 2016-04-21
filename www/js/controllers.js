@@ -51,7 +51,7 @@ angular.module('ayya1008.controllers', [])
   });
 
   $ionicPlatform.registerBackButtonAction(function() {
-    if ($state.current.name === 'app.temples.index') {
+    if ($state.current.name === 'app.feed') {
       navigator.app.exitApp();
     } else {
       navigator.app.backHistory();
@@ -59,13 +59,15 @@ angular.module('ayya1008.controllers', [])
   }, 100);
 
   $scope.tamilMonths = ["", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை",
-    "மார்கழி", "தை", "மாசி", "பங்குனி"];
+    "மார்கழி", "தை", "மாசி", "பங்குனி"
+  ];
 
   $scope.districts = ["அரியலூர்", "சென்னை", "கோயம்புத்தூர்", "கடலூர்", "தர்மபுரி", "திண்டுக்கல்", "ஈரோடு",
     "காஞ்சிபுரம்", "கன்னியாகுமரி", "கரூர்", "கிருஷ்ணகிரி", "மதுரை", "நாகப்பட்டினம்", "நாமக்கல்",
     "பெரம்பலூர்", "புதுக்கோட்டை", "இராமநாதபுரம்", "சேலம்", "சிவகங்கை", "தஞ்சாவூர்", "தேனி", "நீலகிரி",
     "திருநெல்வேலி", "திருவள்ளூர்", "திருவண்ணாமலை", "திருவாரூர்", "தூத்துக்குடி", "திருச்சிராப்பள்ளி",
-    "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"];
+    "திருப்பூர்", "வேலூர்", "விழுப்புரம்", "விருதுநகர்"
+  ];
 
   $scope.isOfflineAvailable = function() {
     return DataService.isOfflineAvailable();
@@ -74,6 +76,7 @@ angular.module('ayya1008.controllers', [])
   $scope.width = document.body.clientWidth - 20;
 
   $scope.share = function() {
+    $cordovaGoogleAnalytics.trackEvent('Share', 'App shared');
     $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null,
       'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
   };
@@ -82,15 +85,18 @@ angular.module('ayya1008.controllers', [])
     return navigator.onLine;
   };
 
-  DataService.getTemples(true).then(function(temples) {
-    $scope.$broadcast('TEMPLES_RECEIVED', temples);
-  });
+  DataService.getTemples(true);
+
 })
 
-.controller('TemplesCtrl', function($scope, $stateParams, DataService, $cordovaGoogleAnalytics,
-  $cordovaSplashscreen, $timeout) {
+.controller('TemplesCtrl', function($scope, $stateParams, DataService, $cordovaGoogleAnalytics, $timeout,
+  $ionicLoading) {
 
-  $scope.isSpinnerVisible = true;
+  DataService.getTemples(true).then(function(temples) {
+    processTemples(temples);
+  });
+
+  $ionicLoading.show();
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackView('Temple Screen');
   }
@@ -102,19 +108,12 @@ angular.module('ayya1008.controllers', [])
     });
     $scope.grouped = _.groupBy($scope.currentTemples, 'district');
     $scope.districts = Object.keys($scope.grouped);
-    $scope.isSpinnerVisible = false;
-    $timeout(function() {
-      $cordovaSplashscreen.hide();
-    }, 1000);
+    $ionicLoading.hide();
   };
 
   DataService.getTemples().then(processTemples);
 
   $scope.templeType = $stateParams.templeType;
-
-  $scope.$on('TEMPLES_RECEIVED', function(scope, temples) {
-    processTemples(temples);
-  });
 
   if ($stateParams.templeType === 'pathi') {
     $scope.title = 'பதிகள்';
@@ -180,9 +179,9 @@ angular.module('ayya1008.controllers', [])
   };
 })
 
-.controller('MessagesCtrl', function($cordovaGoogleAnalytics, $scope, DataService) {
+.controller('MessagesCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $cordovaSocialSharing) {
   if ($scope.isAnalyticsReady) {
-    $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read');
+    $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read', $scope.message.message, $scope.message.id);
   }
 
   DataService.getTemples().then(function(temples) {
@@ -190,6 +189,17 @@ angular.module('ayya1008.controllers', [])
       return temple.id === parseInt($scope.message.additionalData.temple);
     });
   });
+
+  $scope.shareMessage = function(message, image, platform) {
+    $cordovaGoogleAnalytics.trackEvent('Message', 'Shared-Message', $scope.message.message, $scope.message.id);
+    $cordovaGoogleAnalytics.trackEvent('Message', 'Shared-Platform', platform, $scope.message.id);
+    if (platform === 'facebook') {
+      $cordovaSocialSharing.shareViaFacebook(message, image, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+    } else if (platform === 'whatsapp') {
+      $cordovaSocialSharing.shareViaWhatsApp(message, image,
+        'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+    }
+  };
 })
 
 .controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope, $http) {
@@ -232,6 +242,74 @@ angular.module('ayya1008.controllers', [])
       id: $scope.scriptureId
     });
   });
+})
+
+.controller('FeedCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaSplashscreen,
+  $timeout) {
+  if ($scope.isAnalyticsReady) {
+    $cordovaGoogleAnalytics.trackEvent('Feed', 'Feed Openned');
+  }
+
+  var page = 0;
+  var forced = false;
+
+  $scope.doRefresh = function() {
+    page = 0;
+    forced = true;
+    $scope.loadMore();
+  };
+
+  if (!navigator.onLine && !$scope.isOfflineAvailable()) {
+    $cordovaSplashscreen.hide();
+    $ionicLoading.hide();
+    $scope.$broadcast('scroll.refreshComplete');
+  }
+
+  $scope.loadMore = function() {
+    if (!navigator.onLine && !$scope.isOfflineAvailable()) {
+      $cordovaSplashscreen.hide();
+      $ionicLoading.hide();
+      $scope.$broadcast('scroll.refreshComplete');
+    } else {
+      if (page === 0) {
+        $ionicLoading.show();
+      }
+      DataService.getFeed(page, forced).then(function(response) {
+        forced = true;
+        var activities = _.uniqBy(response.activities, function(activity) {
+          return activity.trackable_type + activity.trackable_id;
+        });
+        activities = _.sortBy(activities, 'created_at').reverse();
+        activities = _.map(activities, function(activity) {
+          var key = activity.key;
+          activity.action = key.split('.')[1];
+          if (activity.trackable_type === 'Temple') {
+            activity.temple = _.find(response.temples, {
+              id: activity.trackable_id
+            });
+            if (activity.temple.thumb === '/img1s/thumb/missing.png' || activity.temple.thumb === '/pictures/thumb/missing.png') {
+              activity.temple.thumb = 'img/preview.png';
+            }
+            activity.link = '#/app/temples/' + activity.temple.temple_type.toLowerCase() + '/' + activity.temple.id;
+          } else if (activity.trackable_type === 'Notification') {
+            activity.notification = _.find(response.notifications, {
+              id: activity.trackable_id
+            });
+            if (activity.notification.picture_url === '/pictures/original/missing.png') {
+              activity.notification.picture_url = 'img/preview.png';
+            }
+          }
+          return activity;
+        });
+        $scope.activities = _.concat($scope.activities, activities) || activities;
+        page++;
+      }).finally(function() {
+        $ionicLoading.hide();
+        $cordovaSplashscreen.hide();
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+    }
+  };
 })
 
 .controller('MapsCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaGeolocation,
@@ -310,7 +388,7 @@ angular.module('ayya1008.controllers', [])
       temple.cars = cars.join(', ');
       $scope.markers.push({
         options: {
-          draggable: true,
+          draggable: false,
           icon: {
             url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF9933'
           }

@@ -1,8 +1,8 @@
 angular.module('ayya1008.services', [])
   .service('DataService', function($http, $q) {
     var server = {
-      // url: 'http://ayya.herokuapp.com/api/v1/'
-      url: 'http://192.168.0.3:3000/api/v1/'
+      url: 'http://ayya.herokuapp.com/api/v1/'
+        // url: 'http://192.168.0.2:3000/api/v1/'
     };
 
     db = new loki('ayya1008.json', {
@@ -17,6 +17,12 @@ angular.module('ayya1008.services', [])
     }
     if (!db.getCollection('messages')) {
       db.addCollection('messages');
+    }
+    if (!db.getCollection('activities')) {
+      db.addCollection('activities');
+    }
+    if (!db.getCollection('notifications')) {
+      db.addCollection('notifications');
     }
 
     var upsert = function(collectionName, object) {
@@ -121,11 +127,94 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
+    var getFeed = function(page, forced) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        page = page || 0;
+        var activities = db.getCollection('activities').chain().data();
+        if (activities && activities.length > 0 && !forced) {
+          var notifications = db.getCollection('notifications').chain().data();
+          var temples = db.getCollection('temples').chain().data();
+          deferred.resolve({
+            activities: activities,
+            temples: temples,
+            notifications: notifications
+          });
+        }
+        $http({
+          method: 'GET',
+          url: server.url + 'activities',
+          data: {
+            page: page
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          var activities = JSON.parse(response.data.data).activities;
+          var temples = JSON.parse(response.data.data).temples;
+          temples.forEach(function(temple) {
+            upsert('temples', angular.copy(temple));
+          });
+          var notifications = JSON.parse(response.data.data).notifications;
+          notifications.forEach(function(notification) {
+            upsert('notifications', angular.copy(notification));
+          });
+          activities.forEach(function(activity) {
+            upsert('activities', angular.copy(activity));
+          });
+          deferred.resolve(JSON.parse(response.data.data));
+        });
+      } else {
+        var activities = db.getCollection('activities').chain().data();
+        var temples = db.getCollection('temples').chain().data();
+        var notifications = db.getCollection('notifications').chain().data();
+        deferred.resolve({
+          activities: activities,
+          temples: temples,
+          notifications: notifications
+        });
+      }
+      return deferred.promise;
+    };
+
+    var getNotification = function(id) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        $http({
+          method: 'GET',
+          url: server.url + 'notifications',
+          params: {
+            id: id
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          var notification = JSON.parse(response.data.data).notification[0];
+          upsert('notifications', angular.copy(notification));
+          deferred.resolve(notification);
+        });
+      } else {
+        var notifications = db.getCollection('notifications').chain().data();
+        deferred.resolve(_.find(notifications, {
+          id: id
+        }));
+      }
+      return deferred.promise;
+    };
+
     return {
       getTemples: getTemples,
       getMessages: getMessages,
       isOfflineAvailable: isOfflineAvailable,
       registerDevice: registerDevice,
-      addTemple: addTemple
+      addTemple: addTemple,
+      getFeed: getFeed,
+      getNotification: getNotification
     };
   });

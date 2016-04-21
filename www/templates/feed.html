@@ -1,0 +1,24 @@
+<ion-view view-title="ஊட்டம்" cache-view="false">
+  <ion-content>
+    <ion-refresher pulling-text="புதுப்பிக்க இழுக்கவும்..." on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item ng-repeat="activity in activities track by $index" class="item-thumbnail-left item-text-wrap item-icon-right">
+        <img class="feed-image" ng-src="{{activity.temple.thumb || activity.notification.picture_url}}" ng-if="isOnline()">
+        <img class="feed-image" ng-src="img/connect.png" ng-if="!isOnline()">
+        <a href="{{activity.link}}" ng-if="activity.link">
+          <h2>{{activity.temple.name || activity.notification.title}}</h2>
+        </a>
+        <h2 ng-if="!activity.link">{{activity.temple.name || activity.notification.title}}</h2>
+        <p ng-if="activity.action==='published' && activity.trackable_type === 'Temple'">தாங்கலின் தகவல் வெளியிடப்பட்டுள்ளது.</p>
+        <p ng-if="activity.action==='updated' && activity.trackable_type === 'Temple'">தாங்கலின் தகவல் மேம்படுத்தப்பட்டது.</p>
+        <p ng-if="activity.trackable_type === 'Notification'">{{activity.notification.message}}</p>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll on-infinite="loadMore()" distance="5%">
+    </ion-infinite-scroll>
+  </ion-content>
+  <div ng-if="!isOnline() && !isOfflineAvailable()" class="center connect">
+    இணையத்துடன் இணைக்கவும்
+  </div>
+</ion-view>

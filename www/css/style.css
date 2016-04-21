@@ -22,6 +22,10 @@
   text-align: center;
 }
 
+.feed-image {
+  border-radius: 50%;
+}
+
 .logo {
   background: #FF9933 url('../img/logo.png') no-repeat center center;
   background-size: contain;
@@ -144,4 +148,8 @@
 
 .global-map .angular-google-map-container {
   height: 100%;
+}
+
+.item h2 {
+  color: inherit;
 }

@@ -1,7 +1,6 @@
 <ion-view view-title="{{title}}" cache-view="false">
   <ion-content>
     <div ng-if="isOnline() || isOfflineAvailable">
-      <ion-spinner icon="android" ng-if="isSpinnerVisible" class="spinner-positive"></ion-spinner>
       <!-- TODO: Close all other districts on click of one. Open only one district at any given time.  -->
       <ion-list ng-if="templeType === 'thangal'">
         <div ng-repeat="district in districts track by $index" ng-init="d.closed=true">
@@ -20,8 +19,8 @@
         </ion-item>
       </ion-list>
     </div>
-    <div ng-if="!isOnline() && !isOfflineAvailable()" class="center connect">
-      இணையத்துடன் இணைக்கவும்
-    </div>
   </ion-content>
+  <div ng-if="!isOnline() && !isOfflineAvailable()" class="center connect">
+    இணையத்துடன் இணைக்கவும்
+  </div>
 </ion-view>

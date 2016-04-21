@@ -1,4 +1,4 @@
-<ion-view view-title="வரைபடம்" class="global-map">
+<ion-view view-title="வரைபடம்" class="global-map" data-tap-disabled="true">
   <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options" bounds="map.bounds" control="googlemap">
     <ui-gmap-marker idKey="marker.id" coords="marker.center" options="marker.options" ng-repeat="marker in markers track by $index">
       <ui-gmap-window ng-cloak templateUrl="'templates/map-window.html'" templateParameter="marker.temple">
