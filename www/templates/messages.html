@@ -15,11 +15,8 @@
         <img class="full-image" src="{{message.additionalData.picture}}" ng-if="message.additionalData.picture">
         <p class="text-wrap" style="white-space: pre-line">{{message.message}}</p>
 
-        <h1 class="positive">செய்தியை பகிர்</h1>
-        <div class="button-bar">
-          <button class="button button-positive button-outline icon ion-social-facebook-outline" ng-click="shareMessage(message.message, message.additionalData.picture, 'facebook')"></button>
-          <button class="button button-positive button-outline icon ion-social-whatsapp-outline" ng-click="shareMessage(message.message, message.additionalData.picture, 'whatsapp')"></button>
-        </div>
+        <h2 class="positive">செய்தியை பகிர்</h2>
+        <button class="button button-positive button-outline icon ion-social-whatsapp-outline button-block" ng-click="shareMessage(message.message, message.additionalData.picture, 'whatsapp')"></button>
         <a class="button button-full button-positive" ng-href="#app/temples/{{temple.type.toLowerCase()}}/{{temple.id}}" ng-if="message.additionalData.temple">
           கோவிலுக்கு செல்ல
         </a>
