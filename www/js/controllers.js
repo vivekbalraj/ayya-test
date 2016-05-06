@@ -416,6 +416,8 @@ angular.module('ayya1008.controllers', [])
       id: parseInt($stateParams.templeId)
     });
 
+    DataService.updateTempleViewed($scope.temple.id);
+
     var cars = [];
 
     _.each($scope.temple.cars, function(car) {

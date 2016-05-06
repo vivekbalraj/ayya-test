@@ -208,6 +208,27 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
+    var updateTempleViewed = function(id) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        $http({
+          method: 'POST',
+          url: server.url + 'temples/view-temple',
+          params: {
+            id: id
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          deferred.resolve(response);
+        });
+      }
+      return deferred.promise;
+    };
+
     return {
       getTemples: getTemples,
       getMessages: getMessages,
@@ -215,6 +236,7 @@ angular.module('ayya1008.services', [])
       registerDevice: registerDevice,
       addTemple: addTemple,
       getFeed: getFeed,
-      getNotification: getNotification
+      getNotification: getNotification,
+      updateTempleViewed: updateTempleViewed
     };
   });
