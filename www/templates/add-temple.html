@@ -76,11 +76,32 @@
           <span class="input-label">தகவல்</span>
           <textarea ng-model="temple.information"></textarea>
         </label>
+        <button class="button button-full button-calm" ng-click="openModal()">
+          வாகனங்கள்
+        </button>
         <button type="submit" class="button button-block button-positive" ng-click="addTemple()">
           அனுப்பு
         </button>
       </div>
     </form>
   </ion-content>
-
+<script id="vehicle-modal.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-positive">
+      <h1 class="title">வாகனங்கள்</h1>
+      <div class="buttons">
+        <button class="button button-icon ion-close" ng-click="closeModal()">
+        </button>
+      </div>
+    </ion-header-bar>
+    <ion-content class="padding">
+      <ion-list class="list-inset">
+        <ion-checkbox ng-repeat="car in cars track by $index" ng-model="car.isSelected">{{car.name}}</ion-checkbox>
+      </ion-list>
+      <button class="button button-full button-calm" ng-click="closeModal()">
+        சரி
+      </button>
+    </ion-content>
+  </ion-modal-view>
+</script>
 </ion-view>

@@ -50,14 +50,6 @@ angular.module('ayya1008.controllers', [])
     });
   });
 
-  $ionicPlatform.registerBackButtonAction(function() {
-    if ($state.current.name === 'app.feed') {
-      navigator.app.exitApp();
-    } else {
-      navigator.app.backHistory();
-    }
-  }, 100);
-
   $scope.tamilMonths = ["", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை",
     "மார்கழி", "தை", "மாசி", "பங்குனி"
   ];
@@ -122,7 +114,16 @@ angular.module('ayya1008.controllers', [])
   }
 })
 
-.controller('AddTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup, $ionicLoading) {
+.controller('AddTempleCtrl', function($scope, DataService, $cordovaToast, $location, $ionicPopup, $ionicLoading, $ionicModal) {
+
+  DataService.getVehicles().then(function(cars) {
+    $scope.cars = cars;
+    $scope.cars = _.map($scope.cars, function(car) {
+      car.isSelected = false;
+      return car;
+    });
+  });
+
   $scope.temple = {
     name: '',
     year: '',
@@ -140,7 +141,24 @@ angular.module('ayya1008.controllers', [])
     facebook: '',
     priest: ''
   };
+
+  $ionicModal.fromTemplateUrl('vehicle-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
   $scope.addTemple = function() {
+    var cars = _.chain($scope.cars).filter(function(car) {
+      return car.isSelected;
+    }).map('id').value();
     $ionicLoading.show();
     if ($scope.temple.name && $scope.temple.mobile) {
       DataService.addTemple({
@@ -158,7 +176,8 @@ angular.module('ayya1008.controllers', [])
         steet_address: $scope.temple.address,
         information: $scope.temple.information,
         facebook_page_url: $scope.facebook,
-        priest_name: $scope.priest
+        priest_name: $scope.priest,
+        cars: cars
       }).then(function() {
         $ionicLoading.hide();
         $ionicPopup.alert({
@@ -184,11 +203,17 @@ angular.module('ayya1008.controllers', [])
     $cordovaGoogleAnalytics.trackEvent('Message', 'Message Read', $scope.message.message, $scope.message.id);
   }
 
-  DataService.getTemples().then(function(temples) {
-    $scope.temple = _.find(temples, function(temple) {
-      return temple.id === parseInt($scope.message.additionalData.temple);
+  if ($scope.message.additionalData && $scope.message.additionalData.temple) {
+    DataService.getTemples().then(function(temples) {
+      $scope.temple = _.find(temples, function(temple) {
+        return temple.id === parseInt($scope.message.additionalData.temple);
+      });
     });
-  });
+  } else {
+    DataService.getNotification($scope.message.id).then(function(notification) {
+      $scope.message.additionalData.picture = notification.picture_url;
+    });
+  }
 
   $scope.shareMessage = function(message, image, platform) {
     $cordovaGoogleAnalytics.trackEvent('Message', 'Shared-Message', $scope.message.message, $scope.message.id);
@@ -202,7 +227,7 @@ angular.module('ayya1008.controllers', [])
   };
 })
 
-.controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope, $http) {
+.controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Scripture', 'Scripture list');
   }

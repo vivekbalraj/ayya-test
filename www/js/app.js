@@ -5,9 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps',
-  'ngMessages'])
+  'ngMessages'
+])
 
-.run(function($ionicPlatform, $http) {
+.run(function($ionicPlatform, $http, $rootScope, $cordovaToast, $ionicHistory) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,6 +21,22 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
       StatusBar.styleDefault();
     }
   });
+
+  $ionicPlatform.registerBackButtonAction(function(event) {
+    if ($rootScope.backButtonPressedOnceToExit) {
+      ionic.Platform.exitApp();
+    } else if ($ionicHistory.backView()) {
+      $ionicHistory.goBack();
+    } else {
+      $rootScope.backButtonPressedOnceToExit = true;
+      $cordovaToast.showShortBottom('வெளியேற மீண்டும் பின் பொத்தானை அமுக்கவும்...');
+      setTimeout(function() {
+        $rootScope.backButtonPressedOnceToExit = false;
+      }, 2000);
+    }
+    event.preventDefault();
+    return false;
+  }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider) {

@@ -2,7 +2,7 @@ angular.module('ayya1008.services', [])
   .service('DataService', function($http, $q) {
     var server = {
       url: 'http://ayya.herokuapp.com/api/v1/'
-        // url: 'http://192.168.0.2:3000/api/v1/'
+        // url: 'http://192.168.0.3:3000/api/v1/'
     };
 
     db = new loki('ayya1008.json', {
@@ -229,6 +229,36 @@ angular.module('ayya1008.services', [])
       return deferred.promise;
     };
 
+    var getMessage = function(id) {
+      var deferred = $q.defer();
+      if (navigator.onLine) {
+        $http({
+          method: 'POST',
+          url: server.url + 'notifications',
+          params: {
+            id: id
+          },
+          transformResponse: function(data, headersGetter, status) {
+            return {
+              data: data
+            };
+          }
+        }).then(function(response) {
+          deferred.resolve(response.notification[0]);
+        });
+      }
+      return deferred.promise;
+    };
+
+    var getVehicles = function() {
+      var deferred = $q.defer();
+
+      $http.get(server.url + 'cars').then(function(response) {
+        deferred.resolve(response.data.cars);
+      });
+      return deferred.promise;
+    }
+
     return {
       getTemples: getTemples,
       getMessages: getMessages,
@@ -237,6 +267,8 @@ angular.module('ayya1008.services', [])
       addTemple: addTemple,
       getFeed: getFeed,
       getNotification: getNotification,
-      updateTempleViewed: updateTempleViewed
+      updateTempleViewed: updateTempleViewed,
+      getMessage: getMessage,
+      getVehicles: getVehicles
     };
   });
