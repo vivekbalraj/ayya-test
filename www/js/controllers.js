@@ -69,8 +69,7 @@ angular.module('ayya1008.controllers', [])
 
   $scope.share = function() {
     $cordovaGoogleAnalytics.trackEvent('Share', 'App shared');
-    $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null,
-      'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+    $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null, 'https://goo.gl/5z1y2s');
   };
 
   $scope.isOnline = function() {
@@ -155,6 +154,12 @@ angular.module('ayya1008.controllers', [])
     $scope.modal.hide();
   };
 
+  var mobileNumber;
+
+  window.plugins.phonenumber.get(function success(phonenumber) {
+    mobileNumber = phonenumber;
+  });
+
   $scope.addTemple = function() {
     var cars = _.chain($scope.cars).filter(function(car) {
       return car.isSelected;
@@ -177,7 +182,8 @@ angular.module('ayya1008.controllers', [])
         information: $scope.temple.information,
         facebook_page_url: $scope.facebook,
         priest_name: $scope.priest,
-        cars: cars
+        cars: cars,
+        device_no: mobileNumber
       }).then(function() {
         $ionicLoading.hide();
         $ionicPopup.alert({
@@ -221,13 +227,12 @@ angular.module('ayya1008.controllers', [])
     if (platform === 'facebook') {
       $cordovaSocialSharing.shareViaFacebook(message, image, 'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
     } else if (platform === 'whatsapp') {
-      $cordovaSocialSharing.shareViaWhatsApp(message, image,
-        'https://play.google.com/store/apps/details?id=in.iamsugan.ayya1008');
+      $cordovaSocialSharing.shareViaWhatsApp(message, image, 'https://goo.gl/5z1y2s');
     }
   };
 })
 
-.controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope) {
+.controller('ScripturesCtrl', function($cordovaGoogleAnalytics, $scope, $http) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Scripture', 'Scripture list');
   }
@@ -269,8 +274,7 @@ angular.module('ayya1008.controllers', [])
   });
 })
 
-.controller('FeedCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $ionicLoading, $cordovaSplashscreen,
-  $timeout) {
+.controller('FeedCtrl', function($cordovaGoogleAnalytics, $scope, DataService, $cordovaSplashscreen, $timeout) {
   if ($scope.isAnalyticsReady) {
     $cordovaGoogleAnalytics.trackEvent('Feed', 'Feed Openned');
   }
@@ -286,19 +290,14 @@ angular.module('ayya1008.controllers', [])
 
   if (!navigator.onLine && !$scope.isOfflineAvailable()) {
     $cordovaSplashscreen.hide();
-    $ionicLoading.hide();
     $scope.$broadcast('scroll.refreshComplete');
   }
 
   $scope.loadMore = function() {
     if (!navigator.onLine && !$scope.isOfflineAvailable()) {
       $cordovaSplashscreen.hide();
-      $ionicLoading.hide();
       $scope.$broadcast('scroll.refreshComplete');
     } else {
-      if (page === 0) {
-        $ionicLoading.show();
-      }
       DataService.getFeed(page, forced).then(function(response) {
         forced = true;
         var activities = _.uniqBy(response.activities, function(activity) {
@@ -329,7 +328,6 @@ angular.module('ayya1008.controllers', [])
         $scope.activities = _.concat($scope.activities, activities) || activities;
         page++;
       }).finally(function() {
-        $ionicLoading.hide();
         $cordovaSplashscreen.hide();
         $scope.$broadcast('scroll.refreshComplete');
       });
@@ -359,12 +357,6 @@ angular.module('ayya1008.controllers', [])
 
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function(position) {
       var blue = {
-        // path: 'M-7,0a7,7 0 1,0 14,0a7,7 0 1,0 -14,0',
-        // fillColor: '#3E82F7',
-        // fillOpacity: 0.8,
-        // scale: 1,
-        // strokeColor: '#FFFFFF',
-        // strokeWeight: 3
         url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|3E82F7'
       };
       $scope.markers.push({
@@ -379,7 +371,7 @@ angular.module('ayya1008.controllers', [])
         }
       });
     }).finally(function() {
-      $timeout($ionicLoading.hide, 50);
+      $timeout($ionicLoading.hide, 1000);
     });
 
     $scope.map = {

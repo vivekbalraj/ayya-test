@@ -12,7 +12,7 @@
         <h2 ng-if="!activity.link">{{activity.temple.name || activity.notification.title}}</h2>
         <p ng-if="activity.action==='published' && activity.trackable_type === 'Temple'">தாங்கலின் தகவல் வெளியிடப்பட்டுள்ளது.</p>
         <p ng-if="activity.action==='updated' && activity.trackable_type === 'Temple'">தாங்கலின் தகவல் மேம்படுத்தப்பட்டது.</p>
-        <p ng-if="activity.trackable_type === 'Notification'">{{activity.notification.message}}</p>
+        <p hm-read-more hm-text="{{ activity.notification.message }}" hm-limit="50" hm-more-text="மேலும் வாசிக்க" hm-less-text="சுருக்க" hm-dots-class="dots" hm-link-class="links" ng-if="activity.trackable_type === 'Notification'">{{activity.notification.message}}</p>
       </ion-item>
     </ion-list>
     <ion-infinite-scroll on-infinite="loadMore()" distance="5%">

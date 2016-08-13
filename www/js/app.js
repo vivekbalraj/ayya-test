@@ -5,8 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps',
-  'ngMessages'
-])
+  'ngMessages', 'hm.readmore'])
 
 .run(function($ionicPlatform, $http, $rootScope, $cordovaToast, $ionicHistory) {
   $ionicPlatform.ready(function() {
@@ -29,7 +28,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
       $ionicHistory.goBack();
     } else {
       $rootScope.backButtonPressedOnceToExit = true;
-      $cordovaToast.showShortBottom('வெளியேற மீண்டும் பின் பொத்தானை அமுக்கவும்...');
+      $cordovaToast.showShortBottom('வெளியேற மீண்டும் அழுத்தவும்...');
       setTimeout(function() {
         $rootScope.backButtonPressedOnceToExit = false;
       }, 2000);
@@ -144,7 +143,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
 
   uiGmapGoogleMapApiProvider.configure({
     key: 'AIzaSyCmU_GnOsVq-wNbisGQuxB_6l9e4ZF42N4',
-    v: '3.22'
+    v: '3.23'
   });
 
   // if none of the above states are matched, use this as the fallback

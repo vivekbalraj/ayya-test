@@ -149,3 +149,7 @@
 .global-map .angular-google-map-container {
   height: 100%;
 }
+
+.loading-container .loading {
+  background-color: rgba(0,0,0,.1);
+}

@@ -10,6 +10,7 @@
     "lodash": "^4.5.1",
     "angular-google-maps": "^2.3.2",
     "angular-simple-logger": "^0.1.7",
-    "angular-messages": "^1.5.2"
+    "angular-messages": "^1.5.2",
+    "angular-read-more": "^1.0.5"
   }
 }
