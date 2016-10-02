@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1008.services', 'uiGmapgoogle-maps',
-  'ngMessages', 'hm.readmore'])
+  'ngMessages', 'hm.readmore'
+])
 
 .run(function($ionicPlatform, $http, $rootScope, $cordovaToast, $ionicHistory) {
   $ionicPlatform.ready(function() {
@@ -38,7 +39,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
   }, 100);
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider, $cordovaAppRateProvider) {
   $stateProvider
 
     .state('app', {
@@ -149,4 +150,11 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/feed');
   $ionicConfigProvider.tabs.position('bottom');
+  var prefs = {
+    language: 'ta',
+    appName: 'Ayya 1008',
+    androidURL: 'market://details?id=in.iamsugan.ayya1008',
+  };
+
+  $cordovaAppRateProvider.setPreferences(prefs)
 });
