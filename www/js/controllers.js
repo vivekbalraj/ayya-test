@@ -1,7 +1,7 @@
 angular.module('ayya1008.controllers', [])
 
 .controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform,
-  $state, $cordovaGoogleAnalytics) {
+  $state, $cordovaGoogleAnalytics, $window) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -77,6 +77,10 @@ angular.module('ayya1008.controllers', [])
   };
 
   DataService.getTemples(true);
+
+  $scope.likeOnFacebook = function() {
+    $window.open('fb://page/1670714779914536', '_system');
+  };
 
 })
 
@@ -376,24 +380,14 @@ angular.module('ayya1008.controllers', [])
 
     $scope.map = {
       center: {
-        latitude: 8.713913,
-        longitude: 77.756652
+        latitude: (parseFloat(_.maxBy(temples, (temple) => parseFloat(temple.latitude)).latitude) + parseFloat(_.minBy(temples, (temple) => parseFloat(temple.latitude)).latitude)) / 2,
+        longitude: (parseFloat(_.maxBy(temples, (temple) => parseFloat(temple.longitude)).longitude) + parseFloat(_.minBy(temples, (temple) => parseFloat(temple.longitude)).longitude)) / 2
       },
-      zoom: 9,
+      zoom: 5,
       options: {
         mapTypeControl: false,
         streetViewControl: false,
         draggable: true
-      },
-      bounds: {
-        northeast: {
-          latitude: 14,
-          longitude: 81
-        },
-        southwest: {
-          latitude: 8,
-          longitude: 77
-        }
       }
     };
 
