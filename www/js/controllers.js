@@ -1,7 +1,7 @@
 angular.module('ayya1008.controllers', [])
 
 .controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform,
-  $state, $cordovaGoogleAnalytics, $window) {
+  $state, $cordovaGoogleAnalytics, $window, $cordovaAppAvailability) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -79,7 +79,11 @@ angular.module('ayya1008.controllers', [])
   DataService.getTemples(true);
 
   $scope.likeOnFacebook = function() {
-    $window.open('fb://page/1670714779914536', '_system');
+    $cordovaAppAvailability.check('fb://').then(function() {
+      $window.open('fb://page/1670714779914536', '_system');
+    }, function() {
+      $window.open('https://www.facebook.com/ayyapathi/', '_system');
+    });
   };
 
 })
