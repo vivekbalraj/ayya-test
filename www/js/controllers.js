@@ -68,8 +68,8 @@ angular.module('ayya1008.controllers', [])
   $scope.width = document.body.clientWidth - 20;
 
   $scope.share = function() {
-    $cordovaGoogleAnalytics.trackEvent('Share', 'App shared');
     $cordovaSocialSharing.share('Try this android app for Ayyavazhi: - ', null, null, 'https://goo.gl/5z1y2s');
+    $cordovaGoogleAnalytics.trackEvent('Share', 'App shared');
   };
 
   $scope.isOnline = function() {
@@ -168,12 +168,6 @@ angular.module('ayya1008.controllers', [])
     $scope.modal.hide();
   };
 
-  var mobileNumber;
-
-  window.plugins.phonenumber.get(function success(phonenumber) {
-    mobileNumber = phonenumber;
-  });
-
   $scope.addTemple = function() {
     var cars = _.chain($scope.cars).filter(function(car) {
       return car.isSelected;
@@ -196,8 +190,7 @@ angular.module('ayya1008.controllers', [])
         information: $scope.temple.information,
         facebook_page_url: $scope.facebook,
         priest_name: $scope.priest,
-        cars: cars,
-        device_no: mobileNumber
+        cars: cars
       }).then(function() {
         $ionicLoading.hide();
         $ionicPopup.alert({
