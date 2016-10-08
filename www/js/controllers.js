@@ -1,7 +1,7 @@
 angular.module('ayya1008.controllers', [])
 
-.controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform,
-  $state, $cordovaGoogleAnalytics, $window, $cordovaAppAvailability, $cordovaAppRate, $rootScope) {
+.controller('AppCtrl', function($scope, $http, $cordovaSocialSharing, DataService, $ionicPlatform,
+  $state, $cordovaGoogleAnalytics, $window, $cordovaAppAvailability, $cordovaAppRate, $rootScope, $cordovaNetwork) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -57,7 +57,7 @@ angular.module('ayya1008.controllers', [])
   };
 
   $scope.isOnline = function() {
-    return navigator.onLine;
+    return $cordovaNetwork.isOnline();
   };
 
   DataService.getTemples(true);
