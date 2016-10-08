@@ -8,7 +8,7 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
   'ngMessages', 'hm.readmore'
 ])
 
-.run(function($ionicPlatform, $http, $rootScope, $cordovaToast, $ionicHistory) {
+.run(function($ionicPlatform, $http, $rootScope, $cordovaToast, $ionicHistory, $cordovaPushV5, DataService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,6 +20,30 @@ angular.module('ayya1008', ['ionic', 'ayya1008.controllers', 'ngCordova', 'ayya1
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+  });
+
+  var options = {
+    android: {
+      senderID: '975008491239',
+      icon: 'ic_stat_temple',
+      iconColor: '#FF9933'
+    }
+  };
+
+  $cordovaPushV5.initialize(options).then(function() {
+
+    $cordovaPushV5.onNotification();
+    $cordovaPushV5.onError();
+    $cordovaPushV5.register().then(function(registrationId) {
+      DataService.registerDevice({
+        token: registrationId,
+        platform: 'android'
+      });
+    })
+  });
+
+  $rootScope.$on('$cordovaPushV5:errorOcurred', function(event, e) {
+    console.log(event, e);
   });
 
   $ionicPlatform.registerBackButtonAction(function(event) {

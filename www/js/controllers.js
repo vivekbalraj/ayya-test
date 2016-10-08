@@ -1,7 +1,7 @@
 angular.module('ayya1008.controllers', [])
 
 .controller('AppCtrl', function($scope, $http, $cordovaNetwork, $cordovaSocialSharing, DataService, $ionicPlatform,
-  $state, $cordovaGoogleAnalytics, $window, $cordovaAppAvailability, $cordovaAppRate) {
+  $state, $cordovaGoogleAnalytics, $window, $cordovaAppAvailability, $cordovaAppRate, $rootScope) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -26,23 +26,7 @@ angular.module('ayya1008.controllers', [])
   _waitForAnalytics();
 
   $ionicPlatform.ready(function(device) {
-    var config = {
-      iconColor: '#FF9933'
-    };
-    var push = window.PushNotification.init({
-      'android': {
-        senderID: '975008491239',
-        icon: 'ic_stat_temple',
-        iconColor: '#FF9933'
-      }
-    });
-    push.on('registration', function(data) {
-      DataService.registerDevice({
-        token: data.registrationId,
-        platform: 'android'
-      });
-    });
-    push.on('notification', function(data) {
+    $rootScope.$on('$cordovaPushV5:notificationReceived', function(event, data) {
       if (data.additionalData.coldstart) {
         $scope.message = data;
         $state.go('app.messages');
